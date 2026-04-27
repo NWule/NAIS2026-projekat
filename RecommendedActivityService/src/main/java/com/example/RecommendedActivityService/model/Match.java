@@ -1,4 +1,4 @@
-package java.com.example.RecommendedActivitySevice.model;
+package com.example.RecommendedActivityService.model;
 
 import org.springframework.data.neo4j.core.schema.*;
 import java.time.LocalDate;
@@ -8,12 +8,9 @@ import java.util.List;
 public class Match {
 
     @Id
-    private Long matchId;
-
+    private Integer matchId;
     private LocalDate date;
-
     private String competition;
-
     private String stadium;
 
     @Relationship(type = "HAS_PERFORMANCE", direction = Relationship.Direction.INCOMING)
@@ -21,14 +18,14 @@ public class Match {
 
     public Match() {}
 
-    public Match(Long matchId, LocalDate date, String competition, String stadium) {
+    public Match(Integer matchId, LocalDate date, String competition, String stadium) {
         this.matchId = matchId;
         this.date = date;
         this.competition = competition;
         this.stadium = stadium;
     }
 
-    public Long getMatchId() {
+    public Integer getMatchId() {
         return matchId;
     }
 
@@ -48,7 +45,7 @@ public class Match {
         return performances;
     }
 
-    public void setMatchId(Long matchId) {
+    public void setMatchId(Integer matchId) {
         this.matchId = matchId;
     }
 
@@ -67,4 +64,5 @@ public class Match {
     public void setPerformances(List<Performance> performances) {
         this.performances = performances;
     }
+
 }
