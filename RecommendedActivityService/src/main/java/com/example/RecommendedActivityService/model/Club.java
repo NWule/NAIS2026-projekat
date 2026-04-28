@@ -1,48 +1,50 @@
-package java.com.example.RecommendedActivitySevice.model;
+package com.example.RecommendedActivityService.model;
 
 import org.springframework.data.neo4j.core.schema.*;
+
+import java.util.List;
 
 @Node
 public class Club{
     @Id
-    private int clubId;
-
-    private String clubName;
-
+    @GeneratedValue
+    private Long clubId;
+    private String name;
     private String crest;
-
     private int wins;
-
     private int losses;
-
     private int draws;
+
+
+    @Relationship(type = "PARTICIPATED_IN")
+    private List<ClubMatch> matches;
 
     public Club() {
     }
 
-    public Club(int clubId, String clubName, String crest, int wins, int losses, int draws) {
+    public Club(Long clubId, String clubName, String crest, int wins, int losses, int draws) {
         this.clubId = clubId;
-        this.clubName = clubName;
+        this.name = clubName;
         this.crest = crest;
         this.wins = wins;
         this.losses = losses;
         this.draws = draws;
     }
     
-    public int getClubId() {
+    public Long getClubId() {
         return clubId;
     }
 
-    public void setClubId(int clubId) {
+    public void setClubId(Long clubId) {
         this.clubId = clubId;
     }
 
-    public String getClubName() {
-        return clubName;
+    public String getName() {
+        return name;
     }
 
-    public void setClubName(String clubName) {
-        this.clubName = clubName;
+    public void setName(String clubName) {
+        this.name = clubName;
     }
 
     public String getCrest() {
@@ -76,4 +78,5 @@ public class Club{
     public void setDraws(int draws) {
         this.draws = draws;
     }
+
 }

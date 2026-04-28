@@ -1,8 +1,8 @@
-package java.com.example.RecommendedActivitySevice.model;
+package com.example.RecommendedActivityService.model;
 
 import org.springframework.data.neo4j.core.schema.*;
 
-@Node
+@RelationshipProperties
 public class Performance {
 
     @Id
@@ -15,20 +15,16 @@ public class Performance {
     private int yellowCards;
     private int redCards;
 
-    // veza ka igraču
-    @Relationship(type = "FOR_PLAYER", direction = Relationship.Direction.OUTGOING)
-    private Player player;
-
-    // veza ka utakmici
-    @Relationship(type = "IN_MATCH", direction = Relationship.Direction.OUTGOING)
+    @TargetNode
     private Match match;
 
     public Performance() {}
 
-    public Performance(int minutesPlayed, int goals, int assists) {
+    public Performance(int minutesPlayed, int goals, int assists, Match match) {
         this.minutesPlayed = minutesPlayed;
         this.goals = goals;
         this.assists = assists;
+        this.match = match;
     }
 
     public Long getId() {
@@ -73,14 +69,6 @@ public class Performance {
 
     public void setRedCards(int redCards) {
         this.redCards = redCards;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public Match getMatch() {

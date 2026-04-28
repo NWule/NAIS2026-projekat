@@ -1,16 +1,9 @@
-package com.example.RecommendedActivityService.model;
+package com.example.RecommendedActivityService.dto;
 
-import org.springframework.data.neo4j.core.schema.*;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import com.example.RecommendedActivityService.model.Performance;
 
-@Node
-public class Player{
-    @Id
-    @GeneratedValue
+public class PlayerDTO {
+
     private Long playerId;
     private String name;
     private String surname;
@@ -18,12 +11,12 @@ public class Player{
     private Date dateOfBirth;
     private int height;
 
-    @Relationship(type = "OF_PLAYER", direction = Relationship.Direction.OUTGOING)
-    private List<Membership> memberships;
-
-
     public Long getPlayerId() {
         return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
     }
 
     public String getName() {
@@ -46,11 +39,6 @@ public class Player{
         return height;
     }
 
-
-    public void setPlayerId(Long playerId) {
-        this.playerId = playerId;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -70,5 +58,4 @@ public class Player{
     public void setHeight(int height) {
         this.height = height;
     }
-
 }
