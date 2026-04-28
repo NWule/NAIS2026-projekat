@@ -184,3 +184,17 @@ CREATE (mem)-[:PERFORMED_IN {
         ELSE 0 
     END
 }]->(m);
+
+MATCH (p:Player {playerId: 1})-[:OF_PLAYER]->(mem:Membership)-[:OF_CLUB]->(c:Club {clubId: 1}),
+      (m:Match {matchId: 1})
+CREATE (mem)-[:PERFORMED_IN {goals: 3, assists: 1, minutesPlayed: 90, yellowCards: 0, redCards: 0}]->(m);
+MATCH (p:Player {playerId: 7})-[:OF_PLAYER]->(mem:Membership)-[:OF_CLUB]->(c:Club {clubId: 3}),
+      (m:Match {matchId: 3})
+CREATE (mem)-[:PERFORMED_IN {goals: 2, assists: 0, minutesPlayed: 90, yellowCards: 0, redCards: 0}]->(m);
+
+MATCH (p:Player {playerId: 14})-[:OF_PLAYER]->(mem:Membership)-[:OF_CLUB]->(c:Club {clubId: 5}),
+      (m:Match {matchId: 5})
+CREATE (mem)-[:PERFORMED_IN {goals: 0, assists: 0, minutesPlayed: 60, yellowCards: 0, redCards: 2}]->(m);
+MATCH (p:Player {playerId: 13})-[:OF_PLAYER]->(mem:Membership)-[:OF_CLUB]->(c:Club {clubId: 5}),
+      (m:Match {matchId: 13})
+CREATE (mem)-[:PERFORMED_IN {goals: 0, assists: 0, minutesPlayed: 45, yellowCards: 1, redCards: 1}]->(m);
