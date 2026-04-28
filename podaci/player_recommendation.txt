@@ -1,0 +1,139 @@
+// ---------------------------------------------------------
+// 1. CREATE METRICS (10 Nodes)
+// ---------------------------------------------------------
+MERGE (m1:Metric {name: 'Pace', description: 'Top speed and acceleration', category: 'Physical'})
+MERGE (m2:Metric {name: 'Shooting', description: 'Finishing and shot power', category: 'Technical'})
+MERGE (m3:Metric {name: 'Passing', description: 'Vision and crossing accuracy', category: 'Technical'})
+MERGE (m4:Metric {name: 'Dribbling', description: 'Ball control and agility', category: 'Technical'})
+MERGE (m5:Metric {name: 'Defending', description: 'Tackling and interceptions', category: 'Tactical'})
+MERGE (m6:Metric {name: 'Physical', description: 'Strength and stamina', category: 'Physical'})
+MERGE (m7:Metric {name: 'Vision', description: 'Awareness and positioning', category: 'Mental'})
+MERGE (m8:Metric {name: 'Leadership', description: 'Ability to organize the team', category: 'Mental'})
+MERGE (m9:Metric {name: 'Work Rate', description: 'Effort off the ball', category: 'Mental'})
+MERGE (m10:Metric {name: 'Composure', description: 'Decision making under pressure', category: 'Mental'});
+
+// ---------------------------------------------------------
+// 2. CREATE TEAMS (10 Nodes)
+// ---------------------------------------------------------
+MERGE (t1:Team {name: 'Manchester City', country: 'England'})
+MERGE (t2:Team {name: 'Real Madrid', country: 'Spain'})
+MERGE (t3:Team {name: 'Bayern Munich', country: 'Germany'})
+MERGE (t4:Team {name: 'Arsenal', country: 'England'})
+MERGE (t5:Team {name: 'Paris Saint-Germain', country: 'France'})
+MERGE (t6:Team {name: 'Borussia Dortmund', country: 'Germany'})
+MERGE (t7:Team {name: 'Juventus', country: 'Italy'})
+MERGE (t8:Team {name: 'AC Milan', country: 'Italy'})
+MERGE (t9:Team {name: 'Barcelona', country: 'Spain'})
+MERGE (t10:Team {name: 'Ajax', country: 'Netherlands'});
+
+// ---------------------------------------------------------
+// 3. CREATE SCOUTS (10 Nodes - Reliability 1-10)
+// ---------------------------------------------------------
+MERGE (s1:Scout {name: 'John Smith', reliabilityScore: 9})
+MERGE (s2:Scout {name: 'Maria Garcia', reliabilityScore: 8})
+MERGE (s3:Scout {name: 'Hans Müller', reliabilityScore: 7})
+MERGE (s4:Scout {name: 'Liam O Connor', reliabilityScore: 9})
+MERGE (s5:Scout {name: 'Emma Dubois', reliabilityScore: 6})
+MERGE (s6:Scout {name: 'Marco Rossi', reliabilityScore: 8})
+MERGE (s7:Scout {name: 'Lars Nielsen', reliabilityScore: 7})
+MERGE (s8:Scout {name: 'Sofia Silva', reliabilityScore: 10})
+MERGE (s9:Scout {name: 'David Jones', reliabilityScore: 5})
+MERGE (s10:Scout {name: 'Yuki Tanaka', reliabilityScore: 8});
+
+// ---------------------------------------------------------
+// 4. CREATE PLAYERS (12 Nodes)
+// ---------------------------------------------------------
+MERGE (p1:Player {name: 'Erling', surname: 'Haaland', nationality: 'Norway', dateOfBirth: date('2000-07-21')})
+MERGE (p2:Player {name: 'Jude', surname: 'Bellingham', nationality: 'England', dateOfBirth: date('2003-06-29')})
+MERGE (p3:Player {name: 'Kylian', surname: 'Mbappe', nationality: 'France', dateOfBirth: date('1998-12-20')})
+MERGE (p4:Player {name: 'Bukayo', surname: 'Saka', nationality: 'England', dateOfBirth: date('2001-09-05')})
+MERGE (p5:Player {name: 'Jamal', surname: 'Musiala', nationality: 'Germany', dateOfBirth: date('2003-02-26')})
+MERGE (p6:Player {name: 'Rafael', surname: 'Leao', nationality: 'Portugal', dateOfBirth: date('1999-06-10')})
+MERGE (p7:Player {name: 'Pedri', surname: 'Gonzalez', nationality: 'Spain', dateOfBirth: date('2002-11-25')})
+MERGE (p8:Player {name: 'Dusan', surname: 'Vlahovic', nationality: 'Serbia', dateOfBirth: date('2000-01-28')})
+MERGE (p9:Player {name: 'Matthijs', surname: 'de Ligt', nationality: 'Netherlands', dateOfBirth: date('1999-08-12')})
+MERGE (p10:Player {name: 'Phil', surname: 'Foden', nationality: 'England', dateOfBirth: date('2000-05-28')})
+MERGE (p11:Player {name: 'Vinicius', surname: 'Junior', nationality: 'Brazil', dateOfBirth: date('2000-07-12')})
+MERGE (p12:Player {name: 'Eduardo', surname: 'Camavinga', nationality: 'France', dateOfBirth: date('2002-11-10')});
+
+// ---------------------------------------------------------
+// 5. CREATE REPORTS (10 Nodes - Score 1-100)
+// Using 'text' instead of 'comments' and adding 'game'
+// ---------------------------------------------------------
+MERGE (r1:Report {reference: 'REP-001', score: 92, text: 'Absolute machine in front of goal. Generational talent.', game: 'Man City vs Arsenal'})
+MERGE (r2:Report {reference: 'REP-002', score: 88, text: 'Incredible maturity for his age. Dictates the midfield.', game: 'Real Madrid vs Barcelona'})
+MERGE (r3:Report {reference: 'REP-003', score: 95, text: 'Unstoppable pace and finishing. The complete forward.', game: 'PSG vs Bayern'})
+MERGE (r4:Report {reference: 'REP-004', score: 85, text: 'Great agility and ball control, key player for the wing.', game: 'Arsenal vs Chelsea'})
+MERGE (r5:Report {reference: 'REP-005', score: 89, text: 'Fantastic close control in tight spaces.', game: 'Bayern vs Dortmund'})
+MERGE (r6:Report {reference: 'REP-006', score: 82, text: 'Raw physical power, needs to improve decision making.', game: 'AC Milan vs Juventus'})
+MERGE (r7:Report {reference: 'REP-007', score: 90, text: 'Vision is off the charts, but lacks physicality.', game: 'Barcelona vs Sevilla'})
+MERGE (r8:Report {reference: 'REP-008', score: 86, text: 'Strong aerial presence and good finishing.', game: 'Juventus vs Roma'})
+MERGE (r9:Report {reference: 'REP-009', score: 87, text: 'Solid defensive fundamentals, natural leader.', game: 'Bayern vs Leipzig'})
+MERGE (r10:Report {reference: 'REP-010', score: 91, text: 'Dynamic winger with endless stamina.', game: 'Man City vs Liverpool'});
+
+// ---------------------------------------------------------
+// 6. RELATIONSHIPS: PLAYER -> TEAM (PLAYS_FOR)
+// ---------------------------------------------------------
+MATCH (p:Player {surname: 'Haaland'}), (t1:Team {name: 'Borussia Dortmund'}), (t2:Team {name: 'Manchester City'})
+MERGE (p)-[:PLAYS_FOR {position: 'Striker', startDate: date('2020-01-01'), endDate: date('2022-06-30')}]->(t1)
+MERGE (p)-[:PLAYS_FOR {position: 'Striker', startDate: date('2022-07-01')}]->(t2);
+
+MATCH (p:Player {surname: 'Bellingham'}), (t1:Team {name: 'Borussia Dortmund'}), (t2:Team {name: 'Real Madrid'})
+MERGE (p)-[:PLAYS_FOR {position: 'Midfielder', startDate: date('2020-07-23'), endDate: date('2023-06-14')}]->(t1)
+MERGE (p)-[:PLAYS_FOR {position: 'Midfielder', startDate: date('2023-06-15')}]->(t2);
+
+MATCH (p:Player {surname: 'Mbappe'}), (t1:Team {name: 'Paris Saint-Germain'}), (t2:Team {name: 'Real Madrid'})
+MERGE (p)-[:PLAYS_FOR {position: 'Forward', startDate: date('2017-08-31'), endDate: date('2024-06-30')}]->(t1)
+MERGE (p)-[:PLAYS_FOR {position: 'Forward', startDate: date('2024-07-01')}]->(t2);
+
+MATCH (p:Player {surname: 'de Ligt'}), (t1:Team {name: 'Ajax'}), (t2:Team {name: 'Juventus'}), (t3:Team {name: 'Bayern Munich'})
+MERGE (p)-[:PLAYS_FOR {position: 'Defender', startDate: date('2016-09-21'), endDate: date('2019-07-17')}]->(t1)
+MERGE (p)-[:PLAYS_FOR {position: 'Defender', startDate: date('2019-07-18'), endDate: date('2022-07-18')}]->(t2)
+MERGE (p)-[:PLAYS_FOR {position: 'Defender', startDate: date('2022-07-19')}]->(t3);
+
+MATCH (p:Player {surname: 'Saka'}), (t:Team {name: 'Arsenal'})
+MERGE (p)-[:PLAYS_FOR {position: 'Winger', startDate: date('2018-11-29')}]->(t);
+
+// ---------------------------------------------------------
+// 7. RELATIONSHIPS: SCOUT -> REPORT -> PLAYER
+// ---------------------------------------------------------
+MATCH (s1:Scout {name: 'John Smith'}), (r1:Report {reference: 'REP-001'}), (p1:Player {surname: 'Haaland'})
+MERGE (s1)-[:CREATED]->(r1)-[:IS_ABOUT]->(p1);
+
+MATCH (s2:Scout {name: 'Maria Garcia'}), (r2:Report {reference: 'REP-002'}), (p2:Player {surname: 'Bellingham'})
+MERGE (s2)-[:CREATED]->(r2)-[:IS_ABOUT]->(p2);
+
+MATCH (s3:Scout {name: 'Hans Müller'}), (r3:Report {reference: 'REP-003'}), (p3:Player {surname: 'Mbappe'})
+MERGE (s3)-[:CREATED]->(r3)-[:IS_ABOUT]->(p3);
+
+MATCH (s4:Scout {name: 'Liam O Connor'}), (r4:Report {reference: 'REP-004'}), (p4:Player {surname: 'Saka'})
+MERGE (s4)-[:CREATED]->(r4)-[:IS_ABOUT]->(p4);
+
+MATCH (s5:Scout {name: 'Emma Dubois'}), (r5:Report {reference: 'REP-005'}), (p5:Player {surname: 'Musiala'})
+MERGE (s5)-[:CREATED]->(r5)-[:IS_ABOUT]->(p5);
+
+MATCH (s6:Scout {name: 'Marco Rossi'}), (r6:Report {reference: 'REP-006'}), (p6:Player {surname: 'Leao'})
+MERGE (s6)-[:CREATED]->(r6)-[:IS_ABOUT]->(p6);
+
+MATCH (s7:Scout {name: 'Lars Nielsen'}), (r7:Report {reference: 'REP-007'}), (p7:Player {surname: 'Gonzalez'})
+MERGE (s7)-[:CREATED]->(r7)-[:IS_ABOUT]->(p7);
+
+MATCH (s8:Scout {name: 'Sofia Silva'}), (r8:Report {reference: 'REP-008'}), (p8:Player {surname: 'Vlahovic'})
+MERGE (s8)-[:CREATED]->(r8)-[:IS_ABOUT]->(p8);
+
+MATCH (s9:Scout {name: 'David Jones'}), (r9:Report {reference: 'REP-009'}), (p9:Player {surname: 'de Ligt'})
+MERGE (s9)-[:CREATED]->(r9)-[:IS_ABOUT]->(p9);
+
+MATCH (s10:Scout {name: 'Yuki Tanaka'}), (r10:Report {reference: 'REP-010'}), (p10:Player {surname: 'Foden'})
+MERGE (s10)-[:CREATED]->(r10)-[:IS_ABOUT]->(p10);
+
+// ---------------------------------------------------------
+// 8. RELATIONSHIPS: REPORT -> EVERY METRIC
+// ---------------------------------------------------------
+// This matches every Report and every Metric, creating a
+// relationship with a random score between 1 and 10,
+// and fills out the creationDate property.
+MATCH (r:Report), (m:Metric)
+MERGE (r)-[v:VALUED]->(m)
+SET v.score = toInteger(rand() * 10) + 1,
+    v.creationDate = date('2024-04-28');

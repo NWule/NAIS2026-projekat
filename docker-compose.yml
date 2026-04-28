@@ -38,7 +38,7 @@ services:
       - eureka-server
       - neo4j-player-recommendation
     ports:
-      - "9070:9070"
+      - "9060:9060"
 
   neo4j-player-recommendation:
     image: neo4j:5
