@@ -18,7 +18,7 @@ public class Valued {
     @RelationshipId
     @GeneratedValue
     private Long id;
-    private Float score;
+    private Integer score;
     private LocalDate creationDate;
 
     @TargetNode

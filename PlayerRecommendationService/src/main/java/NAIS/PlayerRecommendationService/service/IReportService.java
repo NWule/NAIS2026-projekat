@@ -12,4 +12,5 @@ public interface IReportService {
     public Report getReportById(Long id);
     public Report updateReport(Long id, UpdateReportDto report);
     public boolean deleteReport(Long id);
+    public void updateMetricScore(Long reportId, Long metricId, Integer newScore);
 }

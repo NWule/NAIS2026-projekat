@@ -7,7 +7,9 @@ import NAIS.PlayerRecommendationService.models.relationships.TeamMembership;
 import NAIS.PlayerRecommendationService.repository.PlayerRepo;
 import NAIS.PlayerRecommendationService.repository.TeamRepo;
 import NAIS.PlayerRecommendationService.service.IPlayerService;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -81,5 +83,27 @@ public class PlayerService implements IPlayerService {
 
         player.getTeams().add(membership);
         return playerRepo.save(player);
+    }
+
+    @Override
+    @Transactional
+    public void endPlayerMembership(Long playerId, Long teamId) {
+        playerRepo.endTeamMembership(playerId, teamId, LocalDate.now());
+    }
+
+    public Player getPlayerWithBestScoreForMetrics(List<Long> metricIds) {
+        return playerRepo.findPlayerWithBestScoreForMetrics(metricIds);
+    }
+
+    @Override
+    public List<Player> getSimilarPlayers(Long id) {
+        return playerRepo.findSimilarPlayers(id);
+    }
+
+    public List<Player> getEliteProspects(Integer maxAge, Integer minScoutReliability, Double minScore) {
+        // Calculate the cutoff date based on the maximum age requested
+        LocalDate cutoffDate = LocalDate.now().minusYears(maxAge);
+
+        return playerRepo.findEliteProspects(cutoffDate, minScoutReliability, minScore);
     }
 }

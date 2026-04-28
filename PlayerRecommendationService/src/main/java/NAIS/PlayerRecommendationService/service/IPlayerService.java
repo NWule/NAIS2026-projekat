@@ -21,4 +21,12 @@ public interface IPlayerService {
     public boolean deletePlayer(Long id);
 
     Player addTeamMembership(Long playerId, Long teamId, String position);
+
+    public void endPlayerMembership(Long playerId, Long teamId);
+
+    public Player getPlayerWithBestScoreForMetrics(List<Long> metricIds);
+
+    List<Player> getSimilarPlayers(Long id);
+
+    List<Player> getEliteProspects(Integer maxAge, Integer minScoutReliability, Double minScore);
 }

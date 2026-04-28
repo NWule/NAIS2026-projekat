@@ -63,4 +63,41 @@ public class PlayerController {
 
         return ResponseEntity.ok(updatedPlayer);
     }
+
+    @PutMapping("/{id}/teams/end")
+    public ResponseEntity<Void> endTeamMembership(
+            @PathVariable Long id,
+            @RequestParam Long teamId) {
+
+        playerService.endPlayerMembership(id, teamId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/best-per-metrics")
+    public ResponseEntity<Player> getBestPlayerForMetrics(@RequestParam List<Long> metricIds) {
+        Player player = playerService.getPlayerWithBestScoreForMetrics(metricIds);
+        if (player != null) {
+            return ResponseEntity.ok(player);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/similar")
+    public ResponseEntity<List<Player>> getSimilarPlayers(@PathVariable Long id) {
+        return ResponseEntity.ok(playerService.getSimilarPlayers(id));
+    }
+
+    @GetMapping("/wonderkids")
+    public ResponseEntity<List<Player>> getWonderkids(
+            @RequestParam Integer maxAge,
+            @RequestParam Integer minScoutReliability,
+            @RequestParam Double minScore) {
+
+        List<Player> prospects = playerService.getEliteProspects(maxAge, minScoutReliability, minScore);
+
+        if (prospects.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(prospects);
+    }
 }

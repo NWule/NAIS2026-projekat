@@ -59,4 +59,14 @@ public class ReportController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PatchMapping("/{reportId}/metrics/{metricId}")
+    public ResponseEntity<Void> updateMetricScore(
+            @PathVariable Long reportId,
+            @PathVariable Long metricId,
+            @RequestParam Integer score) {
+
+        reportService.updateMetricScore(reportId, metricId, score);
+        return ResponseEntity.ok().build();
+    }
 }

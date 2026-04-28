@@ -37,7 +37,7 @@ public class ScoutService implements IScoutService {
         scout.setName(scoutDto.getName());
         scout.setSurname(scoutDto.getSurname());
         scout.setYearsOfExperience(scoutDto.getYearsOfExperience());
-        scout.setReliabilityRating(scoutDto.getReliabilityRating());
+        scout.setReliabilityScore(scoutDto.getReliabilityRating());
         return scoutRepo.save(scout);
     }
 
@@ -48,7 +48,7 @@ public class ScoutService implements IScoutService {
             scoutToUpdate.setName(scoutDto.getName());
             scoutToUpdate.setSurname(scoutDto.getSurname());
             scoutToUpdate.setYearsOfExperience(scoutDto.getYearsOfExperience());
-            scoutToUpdate.setReliabilityRating(scoutDto.getReliabilityRating());
+            scoutToUpdate.setReliabilityScore(scoutDto.getReliabilityRating());
             return scoutRepo.save(scoutToUpdate);
         }
         return null;

@@ -93,4 +93,13 @@ public class ReportService implements IReportService {
         reportRepo.deleteById(id);
         return true;
     }
+
+    public void updateMetricScore(Long reportId, Long metricId, Integer newScore) {
+        Integer updatedCount = reportRepo.updateMetricScore(reportId, metricId, newScore);
+
+        if (updatedCount == 0) {
+            throw new RuntimeException("Could not find a 'VALUED' relationship between " +
+                    "Report ID " + reportId + " and Metric ID " + metricId);
+        }
+    }
 }
