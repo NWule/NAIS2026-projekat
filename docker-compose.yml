@@ -29,6 +29,35 @@ services:
     ports:
       - "9003:9000"
 
+  player-recommendation-service:
+    build:
+      context: ./PlayerRecommendationService
+      dockerfile: Dockerfile
+    image: player-recommendation-service:latest
+    depends_on:
+      - eureka-server
+      - neo4j-player-recommendation
+    ports:
+      - "9060:9060"
+
+  neo4j-player-recommendation:
+    image: neo4j:5
+    ports:
+      - "7500:7500"
+      - "7600:7600"
+    environment:
+      NEO4J_AUTH: neo4j/password
+      NEO4J_server_http_listen__address: ":7500"
+      NEO4J_server_bolt_listen__address: ":7600"
+      NEO4J_server_http_advertised__address: "localhost:7500"
+      NEO4J_server_bolt_advertised__address: "localhost:7600"
+    volumes:
+      - neo4j_player_recommendation_data:/data
+    healthcheck:
+      test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1" ]
+      interval: 20s
+      timeout: 10s
+      retries: 5
 
   ticket-sales-service:
     build:
@@ -46,22 +75,6 @@ services:
     ports:
       - "9070:9070"
 
-  graph-service:
-    build:
-      context: ./GraphDatabaseService
-      dockerfile: Dockerfile
-    image: graph-service:latest
-    depends_on:
-      - eureka-server
-      - neo4j
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
-      SPRING_NEO4J_URI: bolt://neo4j:7687
-      SPRING_NEO4J_AUTHENTICATION_USERNAME: neo4j
-      SPRING_NEO4J_AUTHENTICATION_PASSWORD: password
-    ports:
-      - "9060:8080"
-
   neo4j:
     image: neo4j:5
     ports:
@@ -72,10 +85,21 @@ services:
     volumes: # Mounts persistent storage or local folders into the container
       - neo4j_data:/data
     healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1"]
+      test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1" ]
       interval: 20s
       timeout: 10s
       retries: 5
+
+  #  graph-service:
+  #    build:
+  #      context: ./PlayerRecommendationService
+  #      dockerfile: Dockerfile
+  #    image: player-recommendation-service:latest
+#    depends_on:
+#      - eureka-server
+#      - neo4j-player-recommendation
+#    ports:
+#      - "9070:9070"
 
   neo4j-recommended:
     image: neo4j:5
@@ -87,11 +111,10 @@ services:
     volumes:
       - neo4j_recommended_data:/data
     healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1"]
+      test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1" ]
       interval: 20s
       timeout: 10s
       retries: 5
-    
 
   recommended-activity-service:
     build:
@@ -228,6 +251,7 @@ services:
   #  restart: on-failure
 
 volumes: # Declares named volumes for persistent data storage across container restarts
+  neo4j_player_recommendation_data: {}
   neo4j_data: {}
   neo4j_recommended_data: {}
   #ollama_data: {}
