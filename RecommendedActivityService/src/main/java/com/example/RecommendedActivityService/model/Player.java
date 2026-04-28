@@ -1,30 +1,28 @@
-package java.com.example.RecommendedActivitySevice.model;
+package com.example.RecommendedActivityService.model;
 
 import org.springframework.data.neo4j.core.schema.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import com.example.RecommendedActivityService.model.Performance;
 
 @Node
 public class Player{
     @Id
-    private int playerId;
-
+    @GeneratedValue
+    private Long playerId;
     private String name;
-
     private String surname;
-
     private String position;
-
     private Date dateOfBirth;
-
     private int height;
 
-    private int clubId;
+    @Relationship(type = "OF_PLAYER", direction = Relationship.Direction.OUTGOING)
+    private List<Membership> memberships;
 
-    private Boolean isActive;
 
-    public Player() {
-    }
-
-    public int getPlayerId() {
+    public Long getPlayerId() {
         return playerId;
     }
 
@@ -48,16 +46,8 @@ public class Player{
         return height;
     }
 
-    public int getClubId() {
-        return clubId;
-    }
 
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 
@@ -81,11 +71,4 @@ public class Player{
         this.height = height;
     }
 
-    public void setClubId(int clubId) {
-        this.clubId = clubId;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
 }

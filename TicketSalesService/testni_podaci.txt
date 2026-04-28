@@ -1,0 +1,89 @@
+// ============================================================
+// ZONE
+// ============================================================
+CREATE (:Zone {zoneId: 'Z1', name: 'VIP', capacity: 50, priceMultiplier: 3.0, description: 'VIP zona uz teren'});
+CREATE (:Zone {zoneId: 'Z2', name: 'Tribina Sever', capacity: 200, priceMultiplier: 1.0, description: 'Glavna tribina'});
+CREATE (:Zone {zoneId: 'Z3', name: 'Tribina Jug', capacity: 200, priceMultiplier: 0.9, description: 'Juzna tribina'});
+CREATE (:Zone {zoneId: 'Z4', name: 'Gostujuca', capacity: 100, priceMultiplier: 0.8, description: 'Sektor za gostujuce navijace'});
+
+// ============================================================
+// SEDISTA
+// ============================================================
+MATCH (z:Zone {zoneId: 'Z1'}) CREATE (:Seat {seatId: 'S1',  seatRow: 'A', seatNumber: '1', category: 'VIP'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z1'}) CREATE (:Seat {seatId: 'S2',  seatRow: 'A', seatNumber: '2', category: 'VIP'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z1'}) CREATE (:Seat {seatId: 'S3',  seatRow: 'A', seatNumber: '3', category: 'VIP'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z1'}) CREATE (:Seat {seatId: 'S13', seatRow: 'A', seatNumber: '4', category: 'VIP'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z2'}) CREATE (:Seat {seatId: 'S4',  seatRow: 'B', seatNumber: '1', category: 'STANDARD'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z2'}) CREATE (:Seat {seatId: 'S5',  seatRow: 'B', seatNumber: '2', category: 'STANDARD'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z2'}) CREATE (:Seat {seatId: 'S6',  seatRow: 'B', seatNumber: '3', category: 'STANDARD'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z2'}) CREATE (:Seat {seatId: 'S14', seatRow: 'B', seatNumber: '4', category: 'STANDARD'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z3'}) CREATE (:Seat {seatId: 'S7',  seatRow: 'C', seatNumber: '1', category: 'ECONOMY'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z3'}) CREATE (:Seat {seatId: 'S8',  seatRow: 'C', seatNumber: '2', category: 'ECONOMY'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z3'}) CREATE (:Seat {seatId: 'S9',  seatRow: 'C', seatNumber: '3', category: 'ECONOMY'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z3'}) CREATE (:Seat {seatId: 'S12', seatRow: 'D', seatNumber: '3', category: 'ECONOMY'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z3'}) CREATE (:Seat {seatId: 'S15', seatRow: 'C', seatNumber: '4', category: 'ECONOMY'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z4'}) CREATE (:Seat {seatId: 'S10', seatRow: 'D', seatNumber: '1', category: 'STUDENT'})-[:IN_ZONE]->(z);
+MATCH (z:Zone {zoneId: 'Z4'}) CREATE (:Seat {seatId: 'S11', seatRow: 'D', seatNumber: '2', category: 'STUDENT'})-[:IN_ZONE]->(z);
+
+// ============================================================
+// EVENTI
+// ============================================================
+CREATE (:Event {eventId: 'E1', name: 'Vojvodina vs Partizan',       date: date('2026-05-10'), venue: 'Karadjordje stadion', eventType: 'MATCH',   status: 'UPCOMING',   basePrice: 1500.0});
+CREATE (:Event {eventId: 'E2', name: 'Vojvodina vs Crvena zvezda',  date: date('2026-05-24'), venue: 'Karadjordje stadion', eventType: 'MATCH',   status: 'UPCOMING',   basePrice: 2000.0});
+CREATE (:Event {eventId: 'E3', name: 'Vojvodina vs Cukaricki',      date: date('2026-04-05'), venue: 'Karadjordje stadion', eventType: 'MATCH',   status: 'COMPLETED',  basePrice: 1000.0});
+CREATE (:Event {eventId: 'E4', name: 'Vojvodina vs Radnicki',       date: date('2026-04-15'), venue: 'Karadjordje stadion', eventType: 'MATCH',   status: 'COMPLETED',  basePrice: 900.0});
+CREATE (:Event {eventId: 'E5', name: 'Novi Sad Music Festival',     date: date('2026-06-15'), venue: 'Spens',               eventType: 'CONCERT', status: 'UPCOMING',   basePrice: 3000.0});
+
+// ============================================================
+// HAS_ZONE (Event -> Zone)
+// ============================================================
+MATCH (e:Event {eventId: 'E1'}), (z:Zone {zoneId: 'Z1'}) CREATE (e)-[:HAS_ZONE {availableSeats: 40,  soldSeats: 5,   dynamicPriceMultiplier: 1.0}]->(z);
+MATCH (e:Event {eventId: 'E1'}), (z:Zone {zoneId: 'Z2'}) CREATE (e)-[:HAS_ZONE {availableSeats: 140, soldSeats: 40,  dynamicPriceMultiplier: 1.0}]->(z);
+MATCH (e:Event {eventId: 'E1'}), (z:Zone {zoneId: 'Z3'}) CREATE (e)-[:HAS_ZONE {availableSeats: 150, soldSeats: 20,  dynamicPriceMultiplier: 1.0}]->(z);
+MATCH (e:Event {eventId: 'E1'}), (z:Zone {zoneId: 'Z4'}) CREATE (e)-[:HAS_ZONE {availableSeats: 90,  soldSeats: 0,   dynamicPriceMultiplier: 1.0}]->(z);
+
+MATCH (e:Event {eventId: 'E2'}), (z:Zone {zoneId: 'Z1'}) CREATE (e)-[:HAS_ZONE {availableSeats: 10,  soldSeats: 35,  dynamicPriceMultiplier: 1.5}]->(z);
+MATCH (e:Event {eventId: 'E2'}), (z:Zone {zoneId: 'Z2'}) CREATE (e)-[:HAS_ZONE {availableSeats: 50,  soldSeats: 130, dynamicPriceMultiplier: 1.2}]->(z);
+MATCH (e:Event {eventId: 'E2'}), (z:Zone {zoneId: 'Z3'}) CREATE (e)-[:HAS_ZONE {availableSeats: 170, soldSeats: 0,   dynamicPriceMultiplier: 1.0}]->(z);
+MATCH (e:Event {eventId: 'E2'}), (z:Zone {zoneId: 'Z4'}) CREATE (e)-[:HAS_ZONE {availableSeats: 90,  soldSeats: 0,   dynamicPriceMultiplier: 1.0}]->(z);
+
+MATCH (e:Event {eventId: 'E3'}), (z:Zone {zoneId: 'Z1'}) CREATE (e)-[:HAS_ZONE {availableSeats: 0,   soldSeats: 45,  dynamicPriceMultiplier: 2.0}]->(z);
+MATCH (e:Event {eventId: 'E3'}), (z:Zone {zoneId: 'Z2'}) CREATE (e)-[:HAS_ZONE {availableSeats: 20,  soldSeats: 160, dynamicPriceMultiplier: 1.5}]->(z);
+MATCH (e:Event {eventId: 'E3'}), (z:Zone {zoneId: 'Z3'}) CREATE (e)-[:HAS_ZONE {availableSeats: 30,  soldSeats: 140, dynamicPriceMultiplier: 1.2}]->(z);
+MATCH (e:Event {eventId: 'E3'}), (z:Zone {zoneId: 'Z4'}) CREATE (e)-[:HAS_ZONE {availableSeats: 90,  soldSeats: 0,   dynamicPriceMultiplier: 1.0}]->(z);
+
+MATCH (e:Event {eventId: 'E4'}), (z:Zone {zoneId: 'Z2'}) CREATE (e)-[:HAS_ZONE {availableSeats: 60,  soldSeats: 120, dynamicPriceMultiplier: 1.2}]->(z);
+MATCH (e:Event {eventId: 'E4'}), (z:Zone {zoneId: 'Z3'}) CREATE (e)-[:HAS_ZONE {availableSeats: 80,  soldSeats: 90,  dynamicPriceMultiplier: 1.0}]->(z);
+MATCH (e:Event {eventId: 'E4'}), (z:Zone {zoneId: 'Z4'}) CREATE (e)-[:HAS_ZONE {availableSeats: 90,  soldSeats: 0,   dynamicPriceMultiplier: 1.0}]->(z);
+
+MATCH (e:Event {eventId: 'E5'}), (z:Zone {zoneId: 'Z1'}) CREATE (e)-[:HAS_ZONE {availableSeats: 50,  soldSeats: 0,   dynamicPriceMultiplier: 1.0}]->(z);
+MATCH (e:Event {eventId: 'E5'}), (z:Zone {zoneId: 'Z2'}) CREATE (e)-[:HAS_ZONE {availableSeats: 200, soldSeats: 0,   dynamicPriceMultiplier: 1.0}]->(z);
+
+// ============================================================
+// KUPCI
+// ============================================================
+CREATE (:Customer {customerId: 'C1', name: 'Marko',  surname: 'Jovic',    email: 'marko.jovic@email.com',   phone: '0641234567', loyaltyPoints: 520, isActive: true});
+CREATE (:Customer {customerId: 'C2', name: 'Ana',    surname: 'Petrovic', email: 'ana.petrovic@email.com',   phone: '0652345678', loyaltyPoints: 210, isActive: true});
+CREATE (:Customer {customerId: 'C3', name: 'Nikola', surname: 'Stosic',   email: 'nikola.stosic@email.com',  phone: '0663456789', loyaltyPoints: 80,  isActive: true});
+CREATE (:Customer {customerId: 'C4', name: 'Jelena', surname: 'Markovic', email: 'jelena.markovic@email.com',phone: '0674567890', loyaltyPoints: 350, isActive: true});
+CREATE (:Customer {customerId: 'C5', name: 'Stefan', surname: 'Ilic',     email: 'stefan.ilic@email.com',    phone: '0685678901', loyaltyPoints: 150, isActive: true});
+CREATE (:Customer {customerId: 'C6', name: 'Milica', surname: 'Nikolic',  email: 'milica.nikolic@email.com', phone: '0696789012', loyaltyPoints: 0,   isActive: true});
+
+// ============================================================
+// PURCHASED (Customer -> Seat)
+// ============================================================
+MATCH (c:Customer {customerId: 'C1'}), (s:Seat {seatId: 'S1'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-01'), price: 9000.0, ticketType: 'VIP',      discountPercent: 0.0, paymentMethod: 'CARD'}]->(s);
+MATCH (c:Customer {customerId: 'C1'}), (s:Seat {seatId: 'S4'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-02'), price: 1500.0, ticketType: 'STANDARD', discountPercent: 0.0, paymentMethod: 'ONLINE'}]->(s);
+MATCH (c:Customer {customerId: 'C1'}), (s:Seat {seatId: 'S7'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-03-20'), price: 855.0,  ticketType: 'ECONOMY',  discountPercent: 0.0, paymentMethod: 'CARD'}]->(s);
+MATCH (c:Customer {customerId: 'C1'}), (s:Seat {seatId: 'S13'}) CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-10'), price: 9000.0, ticketType: 'VIP',      discountPercent: 0.0, paymentMethod: 'ONLINE'}]->(s);
+MATCH (c:Customer {customerId: 'C2'}), (s:Seat {seatId: 'S2'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-01'), price: 9000.0, ticketType: 'VIP',      discountPercent: 0.0, paymentMethod: 'ONLINE'}]->(s);
+MATCH (c:Customer {customerId: 'C2'}), (s:Seat {seatId: 'S5'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-03'), price: 1500.0, ticketType: 'STANDARD', discountPercent: 0.0, paymentMethod: 'CARD'}]->(s);
+MATCH (c:Customer {customerId: 'C3'}), (s:Seat {seatId: 'S8'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-03-18'), price: 810.0,  ticketType: 'ECONOMY',  discountPercent: 0.0, paymentMethod: 'CASH'}]->(s);
+MATCH (c:Customer {customerId: 'C3'}), (s:Seat {seatId: 'S10'}) CREATE (c)-[:PURCHASED {purchaseDate: date('2026-03-19'), price: 720.0,  ticketType: 'STUDENT',  discountPercent: 0.0, paymentMethod: 'CASH'}]->(s);
+MATCH (c:Customer {customerId: 'C4'}), (s:Seat {seatId: 'S3'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-05'), price: 9000.0, ticketType: 'VIP',      discountPercent: 0.0, paymentMethod: 'CARD'}]->(s);
+MATCH (c:Customer {customerId: 'C4'}), (s:Seat {seatId: 'S6'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-06'), price: 1500.0, ticketType: 'STANDARD', discountPercent: 0.0, paymentMethod: 'ONLINE'}]->(s);
+MATCH (c:Customer {customerId: 'C4'}), (s:Seat {seatId: 'S9'})  CREATE (c)-[:PURCHASED {purchaseDate: date('2026-03-21'), price: 810.0,  ticketType: 'ECONOMY',  discountPercent: 0.0, paymentMethod: 'CARD'}]->(s);
+MATCH (c:Customer {customerId: 'C5'}), (s:Seat {seatId: 'S11'}) CREATE (c)-[:PURCHASED {purchaseDate: date('2026-03-22'), price: 720.0,  ticketType: 'STUDENT',  discountPercent: 0.0, paymentMethod: 'CASH'}]->(s);
+MATCH (c:Customer {customerId: 'C5'}), (s:Seat {seatId: 'S12'}) CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-07'), price: 855.0,  ticketType: 'ECONOMY',  discountPercent: 0.0, paymentMethod: 'ONLINE'}]->(s);
+MATCH (c:Customer {customerId: 'C6'}), (s:Seat {seatId: 'S14'}) CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-08'), price: 1500.0, ticketType: 'STANDARD', discountPercent: 0.0, paymentMethod: 'CARD'}]->(s);
+MATCH (c:Customer {customerId: 'C6'}), (s:Seat {seatId: 'S15'}) CREATE (c)-[:PURCHASED {purchaseDate: date('2026-04-09'), price: 855.0,  ticketType: 'ECONOMY',  discountPercent: 0.0, paymentMethod: 'CARD'}]->(s);
