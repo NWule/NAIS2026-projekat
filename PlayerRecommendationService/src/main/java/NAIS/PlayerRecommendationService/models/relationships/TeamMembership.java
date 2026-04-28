@@ -1,11 +1,15 @@
 package NAIS.PlayerRecommendationService.models.relationships;
 
 import NAIS.PlayerRecommendationService.models.nodes.Team;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.time.LocalDate;
 
 @RelationshipProperties
+@Getter
+@Setter
 public class TeamMembership {
     @RelationshipId
     @GeneratedValue

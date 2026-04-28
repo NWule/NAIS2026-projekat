@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TeamRepo extends Neo4jRepository<Team, Long> {
+    Team findByName(String name);
 }

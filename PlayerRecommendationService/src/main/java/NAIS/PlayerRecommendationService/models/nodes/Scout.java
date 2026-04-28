@@ -23,5 +23,5 @@ public class Scout {
     private Integer reliabilityRating;
 
     @Relationship(value = "CREATED", direction = Relationship.Direction.OUTGOING)
-    List<Valued> reports;
+    List<Report> reports;
 }

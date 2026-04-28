@@ -18,7 +18,7 @@ public class Report {
     @GeneratedValue
     private Long id;
     private String text;
-    private String score;
+    private Integer score;
     private String game;
 
     @Relationship(value = "IS_ABOUT", direction = Relationship.Direction.OUTGOING)

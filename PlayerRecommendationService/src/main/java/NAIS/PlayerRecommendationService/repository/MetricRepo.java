@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MetricRepo extends Neo4jRepository<Metric, Long> {
+    Metric findByName(String name);
 }

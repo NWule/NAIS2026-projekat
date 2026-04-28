@@ -1,5 +1,6 @@
 package NAIS.PlayerRecommendationService.models.relationships;
 
+import NAIS.PlayerRecommendationService.models.nodes.Metric;
 import NAIS.PlayerRecommendationService.models.nodes.Report;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +18,9 @@ public class Valued {
     @RelationshipId
     @GeneratedValue
     private Long id;
+    private Float score;
     private LocalDate creationDate;
 
     @TargetNode
-    private Report report;
+    private Metric metric;
 }

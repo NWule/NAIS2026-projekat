@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ScoutRepo extends Neo4jRepository<Scout, Long> {
+    Scout findByNameAndSurname(String name, String surname);
 }

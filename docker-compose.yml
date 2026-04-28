@@ -36,24 +36,23 @@ services:
     image: player-recommendation-service:latest
     depends_on:
       - eureka-server
-      - neo4j-recommendation
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
-      SPRING_NEO4J_URI: bolt://neo4j-recommendation:7687
-      SPRING_NEO4J_AUTHENTICATION_USERNAME: neo4j
-      SPRING_NEO4J_AUTHENTICATION_PASSWORD: recommendation_password
+      - neo4j-player-recommendation
     ports:
-      - "9070:8080"
+      - "9070:9070"
 
-  neo4j-recommendation:
+  neo4j-player-recommendation:
     image: neo4j:5
     ports:
-      - "7475:7474"
-      - "7688:7687"
+      - "7500:7500"
+      - "7600:7600"
     environment:
       NEO4J_AUTH: neo4j/password
+      NEO4J_server_http_listen__address: ":7500"
+      NEO4J_server_bolt_listen__address: ":7600"
+      NEO4J_server_http_advertised__address: "localhost:7500"
+      NEO4J_server_bolt_advertised__address: "localhost:7600"
     volumes:
-      - neo4j_recommendation_data:/data
+      - neo4j_player_recommendation_data:/data
     healthcheck:
       test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1" ]
       interval: 20s
@@ -209,5 +208,5 @@ services:
 
 volumes: # Declares named volumes for persistent data storage across container restarts
 #  neo4j_data: {}
-  neo4j_recommendation_data: {}
+  neo4j_player_recommendation_data: {}
   #ollama_data: {}
