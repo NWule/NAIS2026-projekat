@@ -30,6 +30,22 @@ services:
       - "9003:9000"
 
 
+  ticket-sales-service:
+    build:
+      context: ./TicketSalesService
+      dockerfile: Dockerfile
+    image: ticket-sales-service:latest
+    depends_on:
+      - eureka-server
+      - neo4j
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_NEO4J_URI: bolt://neo4j:7687
+      SPRING_NEO4J_AUTHENTICATION_USERNAME: neo4j
+      SPRING_NEO4J_AUTHENTICATION_PASSWORD: password
+    ports:
+      - "9070:9070"
+
   graph-service:
     build:
       context: ./GraphDatabaseService
