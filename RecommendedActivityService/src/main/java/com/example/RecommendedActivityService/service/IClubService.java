@@ -8,23 +8,23 @@ public interface IClubService {
 
     ClubDTO createClub(ClubDTO club);
 
-    ClubDTO getById(Integer id);
+    ClubDTO getById(Long id);
 
     List<ClubDTO> getAll();
 
     ClubDTO getByName(String name);
 
-    ClubDTO updateClub(Integer id, ClubDTO updatedClub);
+    ClubDTO updateClub(Long id, ClubDTO updatedClub);
 
-    void deleteClub(Integer id);
+    void deleteClub(Long id);
 
     ClubDTO findBestClub();
 
-    void createParticipation(Integer clubId, Integer matchId, String role);
+    void createParticipation(Long clubId, Long matchId, String role);
 
-    void updateParticipation(Integer clubId, Integer matchId, String role,
+    void updateParticipation(Long clubId, Long matchId, String role,
                              int goalsFor, int goalsAgainst,
                              int possession, int shots);
 
-    void deleteParticipation(Integer clubId, Integer matchId);
+    void deleteParticipation(Long clubId, Long matchId);
 }

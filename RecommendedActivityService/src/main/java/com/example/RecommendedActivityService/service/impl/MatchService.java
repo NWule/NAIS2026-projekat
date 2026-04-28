@@ -26,8 +26,8 @@ public class MatchService implements IMatchService {
     }
 
     @Override
-    public MatchDTO getById(Integer id) {
-        Match match = matchRepository.getById(id);
+    public MatchDTO getById(Long id) {
+        Match match = matchRepository.getByMatchId(id);
 
         if (match == null) {
             throw new RuntimeException("Match not found");
@@ -45,8 +45,8 @@ public class MatchService implements IMatchService {
     }
 
     @Override
-    public MatchDTO update(Integer id, MatchDTO dto) {
-        Match existing = matchRepository.getById(id);
+    public MatchDTO update(Long id, MatchDTO dto) {
+        Match existing = matchRepository.getByMatchId(id);
 
         if (existing == null) {
             throw new RuntimeException("Match not found");
@@ -61,7 +61,7 @@ public class MatchService implements IMatchService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         matchRepository.deleteById(id);
     }
 

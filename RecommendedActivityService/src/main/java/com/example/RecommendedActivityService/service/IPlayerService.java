@@ -10,11 +10,11 @@ public interface IPlayerService {
 
     List<PlayerDTO> getAll();
 
-    PlayerDTO getById(Integer id);
+    PlayerDTO getById(Long id);
 
-    PlayerDTO update(Integer id, PlayerDTO updatedPlayer);
+    PlayerDTO update(Long id, PlayerDTO updatedPlayer);
 
-    void delete(Integer id);
+    void delete(Long id);
 
     List<PlayerDTO> findByName(String name);
 

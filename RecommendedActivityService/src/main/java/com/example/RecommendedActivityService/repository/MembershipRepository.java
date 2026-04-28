@@ -8,23 +8,23 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MembershipRepository extends Neo4jRepository<Membership, Integer> {
+public interface MembershipRepository extends Neo4jRepository<Membership, Long> {
 
-    Membership getById(Integer id);
+    Membership getById(Long id);
 
     @Query("""
         MATCH (p:Player)-[:OF_PLAYER]->(m:Membership)
         WHERE p.playerId = $playerId
         RETURN m
     """)
-    List<Membership> findByPlayerId(Integer playerId);
+    List<Membership> findByPlayerId(Long playerId);
 
     @Query("""
         MATCH (m:Membership)-[:OF_CLUB]->(c:Club)
         WHERE c.clubId = $clubId
         RETURN m
     """)
-    List<Membership> findByClubId(Integer clubId);
+    List<Membership> findByClubId(Long clubId);
 
     @Query("""
         MATCH (p:Player)-[:OF_PLAYER]->(m:Membership)
@@ -32,14 +32,14 @@ public interface MembershipRepository extends Neo4jRepository<Membership, Intege
         RETURN m
         LIMIT 1
     """)
-    Membership findCurrentByPlayerId(Integer playerId);
+    Membership findCurrentByPlayerId(Long playerId);
 
     @Query("""
         MATCH (m:Membership)
         WHERE id(m) = $id
         DETACH DELETE m
     """)
-    void deleteById(Integer id);
+    void deleteById(Long id);
 
     @Query("""
         MATCH (m:Membership), (ma:Match)
@@ -55,7 +55,7 @@ public interface MembershipRepository extends Neo4jRepository<Membership, Intege
             redCards: $red
         }]->(ma)
     """)
-    void createPerformance(Integer membershipId, Integer matchId,
+    void createPerformance(Long membershipId, Long matchId,
                            int goals, int assists,
                            int minutes, int yellow, int red);
 
@@ -68,7 +68,7 @@ public interface MembershipRepository extends Neo4jRepository<Membership, Intege
             r.yellowCards = $yellow,
             r.redCards = $red
     """)
-    void updatePerformance(Integer membershipId, Integer matchId,
+    void updatePerformance(Long membershipId, Long matchId,
                            int goals, int assists,
                            int minutes, int yellow, int red);
 
@@ -77,12 +77,12 @@ public interface MembershipRepository extends Neo4jRepository<Membership, Intege
         WHERE id(m) = $membershipId AND ma.matchId = $matchId
         RETURN count(r) > 0
     """)
-    boolean existsPerformance(Integer membershipId, Integer matchId);
+    boolean existsPerformance(Long membershipId, Long matchId);
 
     @Query("""
         MATCH (m:Membership)-[r:PERFORMED_IN]->(ma:Match)
         WHERE id(m) = $membershipId AND ma.matchId = $matchId
         DELETE r
     """)
-    void deletePerformance(Integer membershipId, Integer matchId);
+    void deletePerformance(Long membershipId, Long matchId);
 }

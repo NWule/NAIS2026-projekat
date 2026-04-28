@@ -7,7 +7,8 @@ import java.util.List;
 @Node
 public class Club{
     @Id
-    private Integer clubId;
+    @GeneratedValue
+    private Long clubId;
     private String name;
     private String crest;
     private int wins;
@@ -21,7 +22,7 @@ public class Club{
     public Club() {
     }
 
-    public Club(Integer clubId, String clubName, String crest, int wins, int losses, int draws) {
+    public Club(Long clubId, String clubName, String crest, int wins, int losses, int draws) {
         this.clubId = clubId;
         this.name = clubName;
         this.crest = crest;
@@ -30,11 +31,11 @@ public class Club{
         this.draws = draws;
     }
     
-    public Integer getClubId() {
+    public Long getClubId() {
         return clubId;
     }
 
-    public void setClubId(Integer clubId) {
+    public void setClubId(Long clubId) {
         this.clubId = clubId;
     }
 

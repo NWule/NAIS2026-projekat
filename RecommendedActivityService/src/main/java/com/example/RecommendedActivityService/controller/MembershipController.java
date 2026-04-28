@@ -22,7 +22,7 @@ public class MembershipController {
     }
 
     @GetMapping("/{id}")
-    public MembershipDTO getById(@PathVariable Integer id) {
+    public MembershipDTO getById(@PathVariable Long id) {
         return membershipService.getById(id);
     }
 
@@ -32,35 +32,35 @@ public class MembershipController {
     }
 
     @GetMapping("/player/{playerId}")
-    public List<MembershipDTO> getByPlayer(@PathVariable Integer playerId) {
+    public List<MembershipDTO> getByPlayer(@PathVariable Long playerId) {
         return membershipService.getByPlayer(playerId);
     }
 
     @GetMapping("/club/{clubId}")
-    public List<MembershipDTO> getByClub(@PathVariable Integer clubId) {
+    public List<MembershipDTO> getByClub(@PathVariable Long clubId) {
         return membershipService.getByClub(clubId);
     }
 
     @GetMapping("/player/{playerId}/current")
-    public MembershipDTO getCurrentByPlayer(@PathVariable Integer playerId) {
+    public MembershipDTO getCurrentByPlayer(@PathVariable Long playerId) {
         return membershipService.getCurrentByPlayer(playerId);
     }
 
     @PutMapping("/{id}")
-    public MembershipDTO update(@PathVariable Integer id,
+    public MembershipDTO update(@PathVariable Long id,
                                 @RequestBody MembershipDTO dto) {
         return membershipService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         membershipService.delete(id);
     }
 
     @PostMapping("/{membershipId}/performance")
     public void createPerformance(
-            @PathVariable Integer membershipId,
-            @RequestParam Integer matchId,
+            @PathVariable Long membershipId,
+            @RequestParam Long matchId,
             @RequestParam int goals,
             @RequestParam int assists,
             @RequestParam int minutes,
@@ -72,8 +72,8 @@ public class MembershipController {
 
     @PutMapping("/{membershipId}/performance")
     public void updatePerformance(
-            @PathVariable Integer membershipId,
-            @RequestParam Integer matchId,
+            @PathVariable Long membershipId,
+            @RequestParam Long matchId,
             @RequestParam int goals,
             @RequestParam int assists,
             @RequestParam int minutes,
@@ -85,8 +85,8 @@ public class MembershipController {
 
     @DeleteMapping("/{membershipId}/performance")
     public void deletePerformance(
-            @PathVariable Integer membershipId,
-            @RequestParam Integer matchId
+            @PathVariable Long membershipId,
+            @RequestParam Long matchId
     ) {
         membershipService.deletePerformance(membershipId, matchId);
     }

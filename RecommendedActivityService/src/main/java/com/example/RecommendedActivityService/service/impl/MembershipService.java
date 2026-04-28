@@ -32,7 +32,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public MembershipDTO getById(Integer id) {
+    public MembershipDTO getById(Long id) {
         Membership membership = membershipRepository.getById(id);
 
         if (membership == null) {
@@ -51,7 +51,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public List<MembershipDTO> getByPlayer(Integer playerId) {
+    public List<MembershipDTO> getByPlayer(Long playerId) {
         return membershipRepository.findByPlayerId(playerId)
                 .stream()
                 .map(this::mapToDTO)
@@ -59,7 +59,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public List<MembershipDTO> getByClub(Integer clubId) {
+    public List<MembershipDTO> getByClub(Long clubId) {
         return membershipRepository.findByClubId(clubId)
                 .stream()
                 .map(this::mapToDTO)
@@ -67,7 +67,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public MembershipDTO getCurrentByPlayer(Integer playerId) {
+    public MembershipDTO getCurrentByPlayer(Long playerId) {
         Membership membership = membershipRepository.findCurrentByPlayerId(playerId);
 
         if (membership == null) {
@@ -78,7 +78,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public MembershipDTO update(Integer id, MembershipDTO updated) {
+    public MembershipDTO update(Long id, MembershipDTO updated) {
         Membership existing = membershipRepository.getById(id);
 
         if (existing == null) {
@@ -93,12 +93,12 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         membershipRepository.deleteById(id);
     }
 
     @Override
-    public MembershipDTO transferPlayer(Integer playerId, MembershipDTO newMembershipDto) {
+    public MembershipDTO transferPlayer(Long playerId, MembershipDTO newMembershipDto) {
 
         Membership current = membershipRepository.findCurrentByPlayerId(playerId);
 
@@ -114,7 +114,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public void endMembership(Integer membershipId) {
+    public void endMembership(Long membershipId) {
         Membership membership = membershipRepository.getById(membershipId);
 
         if (membership == null) {
@@ -126,7 +126,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public void createPerformance(Integer membershipId, Integer matchId,
+    public void createPerformance(Long membershipId, Long matchId,
                                   int goals, int assists,
                                   int minutes, int yellow, int red) {
 
@@ -141,7 +141,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public void updatePerformance(Integer membershipId, Integer matchId,
+    public void updatePerformance(Long membershipId, Long matchId,
                                   int goals, int assists,
                                   int minutes, int yellow, int red) {
 
@@ -156,7 +156,7 @@ public class MembershipService implements IMembershipService {
     }
 
     @Override
-    public void deletePerformance(Integer membershipId, Integer matchId) {
+    public void deletePerformance(Long membershipId, Long matchId) {
 
         if (!membershipRepository.existsPerformance(membershipId, matchId)) {
             throw new RuntimeException("Performance does not exist");

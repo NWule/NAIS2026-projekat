@@ -3,13 +3,11 @@ package com.example.RecommendedActivityService.repository;
 import com.example.RecommendedActivityService.model.Club;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.example.RecommendedActivityService.model.Player;
 
 @Repository
-public interface ClubRepository extends Neo4jRepository<Club, Integer> {
-    Club getById(Integer Id);
+public interface ClubRepository extends Neo4jRepository<Club, Long> {
+    Club getByClubId(Long Id);
 
     Club findByName(String name);
 
@@ -23,7 +21,7 @@ public interface ClubRepository extends Neo4jRepository<Club, Integer> {
                        r.possession = 0,
                        r.shots = 0
         """)
-    void createParticipation(Integer clubId, Integer matchId, String role);
+    void createParticipation(Long clubId, Long matchId, String role);
 
     @Query("""
         MATCH (c:Club)-[r:PARTICIPATED_IN]->(m:Match)
@@ -34,27 +32,26 @@ public interface ClubRepository extends Neo4jRepository<Club, Integer> {
                        r.possession = $possession,
                        r.shots = $shots
     """)
-    void updateParticipation(Integer clubId, Integer matchId, String role, int goalsFor,
+    void updateParticipation(Long clubId, Long matchId, String role, int goalsFor,
                              int goalsAgainst, int possession, int shots);
 
     @Query("""
         MATCH (c:Club {clubId: $clubId})-[r:PARTICIPATED_IN]->(m:Match {matchId: $matchId})
         RETURN count(r) > 0
         """)
-     boolean existsParticipation(Integer clubId, Integer matchId);
+     boolean existsParticipation(Long clubId, Long matchId);
 
     @Query("""
         MATCH (c:Club {clubId: $clubId})-[r:PARTICIPATED_IN]->(m:Match {matchId: $matchId})
         DELETE r
         """)
-    void deleteParticipation(Integer clubId, Integer matchId);
+    void deleteParticipation(Long clubId, Long matchId);
 
-    @Query("MATCH (c:Club)-[r:PARTICIPATED_IN]->(m:Match)<-[:OF_MATCH]-(mem:Membership)-[:OF_PLAYER]->(p:Player) " +
-                    "WITH c, p, r.possession AS possession,  SUM(CASE WHEN mem.goals > 0 THEN 1 ELSE 0 END) AS scoredFlag " +
-                    "WITH c, COUNT(DISTINCT p) AS distinctScorers, AVG(possession) AS avgPossession " +
-                    "WHERE distinctScorers > 1 " +
-                    "RETURN c " +
-                    "ORDER BY distinctScorers DESC, avgPossession ASC " +
-                    "LIMIT 1")
+    @Query("MATCH (c:Club)-[r:PARTICIPATED_IN]->(m:Match) " +
+            "MATCH (p:Player)-[:OF_PLAYER]->(mem:Membership)-[:PERFORMED_IN]->(m) " +
+            "WITH c, p, r.possession AS possession, SUM(CASE WHEN mem.goals > 0 THEN 1 ELSE 0 END) AS scoredFlag " +
+            "WITH c, COUNT(DISTINCT p) AS distinctScorers, AVG(possession) AS avgPossession " +
+            "WHERE distinctScorers > 1 " +
+            "RETURN c ORDER BY distinctScorers DESC, avgPossession ASC LIMIT 1")
     Club findBestLowPossessionDiverseScoringClub();
 }

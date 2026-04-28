@@ -33,12 +33,12 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public PlayerDTO getById(Integer id) {
+    public PlayerDTO getById(Long id) {
         return mapToDTO(getPlayerOrThrow(id));
     }
 
     @Override
-    public PlayerDTO update(Integer id, PlayerDTO dto) {
+    public PlayerDTO update(Long id, PlayerDTO dto) {
         Player player = getPlayerOrThrow(id);
 
         player.setName(dto.getName());
@@ -51,8 +51,8 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public void delete(Integer id) {
-        getPlayerOrThrow(id); // validacija
+    public void delete(Long id) {
+        getPlayerOrThrow(id);
         playerRepository.deleteById(id);
     }
 
@@ -94,9 +94,8 @@ public class PlayerService implements IPlayerService {
         return mapToDTO(player);
     }
 
-    private Player getPlayerOrThrow(Integer id) {
-        return playerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+    private Player getPlayerOrThrow(Long id) {
+        return playerRepository.findByPlayerId(id);
     }
 
     private PlayerDTO mapToDTO(Player player) {

@@ -22,7 +22,7 @@ public class ClubController {
     }
 
     @GetMapping("/{id}")
-    public ClubDTO getById(@PathVariable Integer id) {
+    public ClubDTO getById(@PathVariable Long id) {
         return clubService.getById(id);
     }
 
@@ -37,20 +37,20 @@ public class ClubController {
     }
 
     @PutMapping("/{id}")
-    public ClubDTO update(@PathVariable Integer id,
+    public ClubDTO update(@PathVariable Long id,
                           @RequestBody ClubDTO dto) {
         return clubService.updateClub(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         clubService.deleteClub(id);
     }
 
     @PostMapping("/{clubId}/participation")
     public void createParticipation(
-            @PathVariable Integer clubId,
-            @RequestParam Integer matchId,
+            @PathVariable Long clubId,
+            @RequestParam Long matchId,
             @RequestParam String role
     ) {
         clubService.createParticipation(clubId, matchId, role);
@@ -58,8 +58,8 @@ public class ClubController {
 
     @PutMapping("/{clubId}/participation")
     public void updateParticipation(
-            @PathVariable Integer clubId,
-            @RequestParam Integer matchId,
+            @PathVariable Long clubId,
+            @RequestParam Long matchId,
             @RequestParam String role,
             @RequestParam int goalsFor,
             @RequestParam int goalsAgainst,
@@ -71,8 +71,8 @@ public class ClubController {
 
     @DeleteMapping("/{clubId}/participation")
     public void deleteParticipation(
-            @PathVariable Integer clubId,
-            @RequestParam Integer matchId
+            @PathVariable Long clubId,
+            @RequestParam Long matchId
     ) {
         clubService.deleteParticipation(clubId, matchId);
     }

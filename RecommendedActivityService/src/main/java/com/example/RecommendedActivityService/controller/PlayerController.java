@@ -22,7 +22,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
-    public PlayerDTO getById(@PathVariable Integer id) {
+    public PlayerDTO getById(@PathVariable Long id) {
         return playerService.getById(id);
     }
 
@@ -32,13 +32,13 @@ public class PlayerController {
     }
 
     @PutMapping("/{id}")
-    public PlayerDTO update(@PathVariable Integer id,
+    public PlayerDTO update(@PathVariable Long id,
                             @RequestBody PlayerDTO dto) {
         return playerService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         playerService.delete(id);
     }
 

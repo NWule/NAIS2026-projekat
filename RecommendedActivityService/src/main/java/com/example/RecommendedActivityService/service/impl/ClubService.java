@@ -26,8 +26,8 @@ public class ClubService implements IClubService {
     }
 
     @Override
-    public ClubDTO getById(Integer id) {
-        Club club = clubRepository.getById(id);
+    public ClubDTO getById(Long id) {
+        Club club = clubRepository.getByClubId(id);
 
         if (club == null) {
             throw new RuntimeException("Club not found");
@@ -56,8 +56,8 @@ public class ClubService implements IClubService {
     }
 
     @Override
-    public ClubDTO updateClub(Integer id, ClubDTO dto) {
-        Club existing = clubRepository.getById(id);
+    public ClubDTO updateClub(Long id, ClubDTO dto) {
+        Club existing = clubRepository.getByClubId(id);
 
         if (existing == null) {
             throw new RuntimeException("Club not found");
@@ -74,7 +74,7 @@ public class ClubService implements IClubService {
     }
 
     @Override
-    public void deleteClub(Integer id) {
+    public void deleteClub(Long id) {
         clubRepository.deleteById(id);
     }
 
@@ -90,19 +90,19 @@ public class ClubService implements IClubService {
     }
 
     @Override
-    public void createParticipation(Integer clubId, Integer matchId, String role) {
+    public void createParticipation(Long clubId, Long matchId, String role) {
         clubRepository.createParticipation(clubId, matchId, role);
     }
 
     @Override
-    public void updateParticipation(Integer clubId, Integer matchId, String role,
+    public void updateParticipation(Long clubId, Long matchId, String role,
                                     int goalsFor, int goalsAgainst,
                                     int possession, int shots) {
         clubRepository.updateParticipation(clubId, matchId, role, goalsFor, goalsAgainst, possession, shots);
     }
 
     @Override
-    public void deleteParticipation(Integer clubId, Integer matchId) {
+    public void deleteParticipation(Long clubId, Long matchId) {
         clubRepository.deleteParticipation(clubId, matchId);
     }
 

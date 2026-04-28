@@ -10,7 +10,7 @@ public class Membership {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
     private LocalDate fromDate;
     private LocalDate toDate;
@@ -22,7 +22,7 @@ public class Membership {
     @Relationship(type = "OF_CLUB", direction = Relationship.Direction.OUTGOING)
     private Club club;
 
-    @Relationship(type = "HAS_PERFORMANCE", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "PERFORMED_IN", direction = Relationship.Direction.OUTGOING)
     private List<Performance> performances;
 
     public Membership() {}
@@ -33,7 +33,7 @@ public class Membership {
         this.jerseyNumber = jerseyNumber;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -85,7 +85,7 @@ public class Membership {
         this.performances = performances;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

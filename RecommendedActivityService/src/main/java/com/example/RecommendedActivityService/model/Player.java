@@ -10,7 +10,8 @@ import com.example.RecommendedActivityService.model.Performance;
 @Node
 public class Player{
     @Id
-    private Integer playerId;
+    @GeneratedValue
+    private Long playerId;
     private String name;
     private String surname;
     private String position;
@@ -21,7 +22,7 @@ public class Player{
     private List<Membership> memberships;
 
 
-    public Integer getPlayerId() {
+    public Long getPlayerId() {
         return playerId;
     }
 
@@ -46,7 +47,7 @@ public class Player{
     }
 
 
-    public void setPlayerId(Integer playerId) {
+    public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 

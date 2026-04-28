@@ -4,16 +4,16 @@ import java.time.LocalDate;
 
 public class MatchDTO {
 
-    private Integer matchId;
+    private Long matchId;
     private LocalDate date;
     private String competition;
     private String stadium;
 
-    public Integer getMatchId() {
+    public Long getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(Integer matchId) {
+    public void setMatchId(Long matchId) {
         this.matchId = matchId;
     }
 

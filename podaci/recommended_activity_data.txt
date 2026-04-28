@@ -1,0 +1,186 @@
+CREATE
+(:Club {clubId: 1, name: "Red Star FC", crest: "red_star.png", wins: 18, losses: 3, draws: 5}),
+(:Club {clubId: 2, name: "Blue United", crest: "blue_united.png", wins: 15, losses: 6, draws: 5}),
+(:Club {clubId: 3, name: "Greenfield FC", crest: "greenfield.png", wins: 12, losses: 8, draws: 6}),
+(:Club {clubId: 4, name: "Blackstone FC", crest: "blackstone.png", wins: 20, losses: 2, draws: 4}),
+(:Club {clubId: 5, name: "White City FC", crest: "white_city.png", wins: 9, losses: 10, draws: 7}),
+(:Club {clubId: 6, name: "Golden Bridge FC", crest: "golden_bridge.png", wins: 16, losses: 5, draws: 5}),
+(:Club {clubId: 7, name: "Silverlake FC", crest: "silverlake.png", wins: 14, losses: 7, draws: 5}),
+(:Club {clubId: 8, name: "Crimson Athletic", crest: "crimson.png", wins: 11, losses: 9, draws: 6});
+
+
+CREATE
+(:Player {playerId: 1, name: "Luka", surname: "Jovanovic", position: "ST", height: 184}),
+(:Player {playerId: 2, name: "Marko", surname: "Petrovic", position: "CM", height: 178}),
+(:Player {playerId: 3, name: "Nemanja", surname: "Ivanovic", position: "CB", height: 189}),
+(:Player {playerId: 4, name: "Filip", surname: "Nikolic", position: "RW", height: 180}),
+(:Player {playerId: 5, name: "Stefan", surname: "Markovic", position: "GK", height: 193}),
+(:Player {playerId: 6, name: "Aleksa", surname: "Djuric", position: "LB", height: 176}),
+(:Player {playerId: 7, name: "Dusan", surname: "Stojanovic", position: "ST", height: 182}),
+(:Player {playerId: 8, name: "Vuk", surname: "Milic", position: "CM", height: 179}),
+(:Player {playerId: 9, name: "Petar", surname: "Kostic", position: "CB", height: 188}),
+(:Player {playerId: 10, name: "Nikola", surname: "Radovic", position: "LW", height: 181}),
+(:Player {playerId: 11, name: "Ivan", surname: "Savic", position: "ST", height: 185}),
+(:Player {playerId: 12, name: "Milos", surname: "Lazic", position: "CM", height: 177}),
+(:Player {playerId: 13, name: "Andrija", surname: "Tomic", position: "RB", height: 179}),
+(:Player {playerId: 14, name: "Lazar", surname: "Popovic", position: "CB", height: 190}),
+(:Player {playerId: 15, name: "Sasa", surname: "Bogdanovic", position: "GK", height: 195}),
+(:Player {playerId: 16, name: "Uros", surname: "Peric", position: "ST", height: 183}),
+(:Player {playerId: 17, name: "Bogdan", surname: "Vukovic", position: "CM", height: 180}),
+(:Player {playerId: 18, name: "Nemanja", surname: "Simic", position: "LB", height: 176}),
+(:Player {playerId: 19, name: "Marko", surname: "Ristic", position: "RW", height: 181}),
+(:Player {playerId: 20, name: "Filip", surname: "Jovic", position: "ST", height: 184});
+
+CREATE
+(:Match {matchId: 1,  date: date("2025-08-01"), competition: "SuperLiga", stadium: "Rajko Mitic"}),
+(:Match {matchId: 2,  date: date("2025-08-05"), competition: "SuperLiga", stadium: "Partizan Stadium"}),
+(:Match {matchId: 3,  date: date("2025-08-09"), competition: "Cup", stadium: "Novi Sad Arena"}),
+(:Match {matchId: 4,  date: date("2025-08-12"), competition: "SuperLiga", stadium: "Nis Stadium"}),
+(:Match {matchId: 5,  date: date("2025-08-16"), competition: "SuperLiga", stadium: "Kragujevac Stadium"}),
+
+(:Match {matchId: 6,  date: date("2025-08-20"), competition: "Cup", stadium: "Subotica Arena"}),
+(:Match {matchId: 7,  date: date("2025-08-24"), competition: "SuperLiga", stadium: "Zemun Stadium"}),
+(:Match {matchId: 8,  date: date("2025-08-28"), competition: "SuperLiga", stadium: "Backa Topola"}),
+(:Match {matchId: 9,  date: date("2025-09-01"), competition: "Cup", stadium: "Belgrade Arena"}),
+(:Match {matchId: 10, date: date("2025-09-05"), competition: "SuperLiga", stadium: "Cacak Stadium"}),
+
+(:Match {matchId: 11, date: date("2025-09-09"), competition: "SuperLiga", stadium: "Rajko Mitic"}),
+(:Match {matchId: 12, date: date("2025-09-13"), competition: "SuperLiga", stadium: "Partizan Stadium"}),
+(:Match {matchId: 13, date: date("2025-09-17"), competition: "Cup", stadium: "Novi Sad Arena"}),
+(:Match {matchId: 14, date: date("2025-09-21"), competition: "SuperLiga", stadium: "Nis Stadium"}),
+(:Match {matchId: 15, date: date("2025-09-25"), competition: "SuperLiga", stadium: "Kragujevac Stadium"}),
+
+(:Match {matchId: 16, date: date("2025-09-29"), competition: "Cup", stadium: "Subotica Arena"}),
+(:Match {matchId: 17, date: date("2025-10-03"), competition: "SuperLiga", stadium: "Zemun Stadium"}),
+(:Match {matchId: 18, date: date("2025-10-07"), competition: "SuperLiga", stadium: "Backa Topola"}),
+(:Match {matchId: 19, date: date("2025-10-11"), competition: "Cup", stadium: "Belgrade Arena"}),
+(:Match {matchId: 20, date: date("2025-10-15"), competition: "SuperLiga", stadium: "Cacak Stadium"}),
+
+(:Match {matchId: 21, date: date("2025-10-19"), competition: "SuperLiga", stadium: "Rajko Mitic"}),
+(:Match {matchId: 22, date: date("2025-10-23"), competition: "SuperLiga", stadium: "Partizan Stadium"}),
+(:Match {matchId: 23, date: date("2025-10-27"), competition: "Cup", stadium: "Novi Sad Arena"}),
+(:Match {matchId: 24, date: date("2025-10-31"), competition: "SuperLiga", stadium: "Nis Stadium"}),
+(:Match {matchId: 25, date: date("2025-11-04"), competition: "SuperLiga", stadium: "Kragujevac Stadium"}),
+
+(:Match {matchId: 26, date: date("2025-11-08"), competition: "Cup", stadium: "Subotica Arena"}),
+(:Match {matchId: 27, date: date("2025-11-12"), competition: "SuperLiga", stadium: "Zemun Stadium"}),
+(:Match {matchId: 28, date: date("2025-11-16"), competition: "SuperLiga", stadium: "Backa Topola"}),
+(:Match {matchId: 29, date: date("2025-11-20"), competition: "Cup", stadium: "Belgrade Arena"}),
+(:Match {matchId: 30, date: date("2025-11-24"), competition: "SuperLiga", stadium: "Cacak Stadium"});
+
+
+MATCH (p:Player), (c:Club)
+WHERE
+(p.playerId IN [1,2,3] AND c.clubId = 1) OR
+(p.playerId IN [4,5,6] AND c.clubId = 2) OR
+(p.playerId IN [7,8,9] AND c.clubId = 3) OR
+(p.playerId IN [10,11,12] AND c.clubId = 4) OR
+(p.playerId IN [13,14] AND c.clubId = 5) OR
+(p.playerId IN [15,16] AND c.clubId = 6) OR
+(p.playerId IN [17,18] AND c.clubId = 7) OR
+(p.playerId IN [19,20] AND c.clubId = 8)
+
+CREATE (p)-[:OF_PLAYER]->(:Membership {
+    jerseyNumber: p.playerId + 10
+})-[:OF_CLUB]->(c);
+
+
+MATCH (c:Club), (m:Match)
+WHERE
+(c.clubId = 1 AND m.matchId IN [1,9,17,25]) OR
+(c.clubId = 2 AND m.matchId IN [2,10,18,26]) OR
+(c.clubId = 3 AND m.matchId IN [3,11,19,27]) OR
+(c.clubId = 4 AND m.matchId IN [4,12,20,28]) OR
+(c.clubId = 5 AND m.matchId IN [5,13,21,29]) OR
+(c.clubId = 6 AND m.matchId IN [6,14,22,30]) OR
+(c.clubId = 7 AND m.matchId IN [7,15,23]) OR
+(c.clubId = 8 AND m.matchId IN [8,16,24])
+CREATE (c)-[:PARTICIPATED_IN {
+    role: CASE 
+        WHEN m.matchId % 2 = 0 THEN "AWAY"
+        ELSE "HOME"
+    END,
+
+    goalsFor: CASE c.clubId
+        WHEN 1 THEN CASE m.matchId WHEN 1 THEN 2 WHEN 9 THEN 1 WHEN 17 THEN 3 WHEN 25 THEN 2 END
+        WHEN 2 THEN CASE m.matchId WHEN 2 THEN 1 WHEN 10 THEN 2 WHEN 18 THEN 0 WHEN 26 THEN 1 END
+        WHEN 3 THEN CASE m.matchId WHEN 3 THEN 1 WHEN 11 THEN 2 WHEN 19 THEN 1 WHEN 27 THEN 0 END
+        WHEN 4 THEN CASE m.matchId WHEN 4 THEN 3 WHEN 12 THEN 2 WHEN 20 THEN 2 WHEN 28 THEN 1 END
+        WHEN 5 THEN CASE m.matchId WHEN 5 THEN 0 WHEN 13 THEN 1 WHEN 21 THEN 1 WHEN 29 THEN 0 END
+        WHEN 6 THEN CASE m.matchId WHEN 6 THEN 2 WHEN 14 THEN 3 WHEN 22 THEN 2 WHEN 30 THEN 1 END
+        WHEN 7 THEN CASE m.matchId WHEN 7 THEN 1 WHEN 15 THEN 2 WHEN 23 THEN 1 END
+        WHEN 8 THEN CASE m.matchId WHEN 8 THEN 0 WHEN 16 THEN 1 WHEN 24 THEN 2 END
+    END,
+
+    goalsAgainst: CASE c.clubId
+        WHEN 1 THEN CASE m.matchId WHEN 1 THEN 1 WHEN 9 THEN 1 WHEN 17 THEN 2 WHEN 25 THEN 1 END
+        WHEN 2 THEN CASE m.matchId WHEN 2 THEN 2 WHEN 10 THEN 1 WHEN 18 THEN 2 WHEN 26 THEN 2 END
+        WHEN 3 THEN CASE m.matchId WHEN 3 THEN 2 WHEN 11 THEN 1 WHEN 19 THEN 3 WHEN 27 THEN 1 END
+        WHEN 4 THEN CASE m.matchId WHEN 4 THEN 1 WHEN 12 THEN 2 WHEN 20 THEN 0 WHEN 28 THEN 1 END
+        WHEN 5 THEN CASE m.matchId WHEN 5 THEN 3 WHEN 13 THEN 2 WHEN 21 THEN 2 WHEN 29 THEN 1 END
+        WHEN 6 THEN CASE m.matchId WHEN 6 THEN 1 WHEN 14 THEN 2 WHEN 22 THEN 1 WHEN 30 THEN 2 END
+        WHEN 7 THEN CASE m.matchId WHEN 7 THEN 2 WHEN 15 THEN 1 WHEN 23 THEN 3 END
+        WHEN 8 THEN CASE m.matchId WHEN 8 THEN 2 WHEN 16 THEN 1 WHEN 24 THEN 0 END
+    END,
+
+    possession: CASE c.clubId
+        WHEN 4 THEN 61
+        WHEN 1 THEN 58
+        WHEN 6 THEN 56
+        WHEN 2 THEN 52
+        ELSE 48
+    END,
+
+    shots: CASE c.clubId
+        WHEN 4 THEN 15
+        WHEN 6 THEN 14
+        WHEN 1 THEN 12
+        ELSE 9
+    END
+}]->(m);
+
+
+
+MATCH (p:Player)-[:OF_PLAYER]->(mem:Membership)-[:OF_CLUB]->(c:Club),
+      (m:Match)
+WHERE c.clubId = ((m.matchId % 8) + 1)
+
+WITH p, mem, m, c
+
+CREATE (mem)-[:PERFORMED_IN {
+    goals: CASE p.playerId
+        WHEN 1 THEN 6
+        WHEN 7 THEN 5
+        WHEN 11 THEN 4
+        WHEN 16 THEN 3
+        WHEN 20 THEN 4
+        ELSE 0
+    END,
+
+    assists: CASE p.playerId
+        WHEN 2 THEN 5
+        WHEN 8 THEN 4
+        WHEN 12 THEN 6
+        WHEN 17 THEN 3
+        WHEN 10 THEN 4
+        ELSE 1
+    END,
+
+    minutesPlayed: CASE p.position
+        WHEN "GK" THEN 90
+        WHEN "CB" THEN 85
+        WHEN "CM" THEN 80
+        ELSE 70
+    END,
+
+    yellowCards: CASE p.position
+        WHEN "CB" THEN 2
+        WHEN "CM" THEN 3
+        ELSE 1
+    END,
+
+    redCards: CASE 
+        WHEN p.playerId = 14 THEN 1 
+        ELSE 0 
+    END
+}]->(m);

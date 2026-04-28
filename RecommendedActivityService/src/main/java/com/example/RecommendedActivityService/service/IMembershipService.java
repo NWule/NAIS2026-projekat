@@ -8,31 +8,31 @@ public interface IMembershipService {
 
     MembershipDTO create(MembershipDTO membership);
 
-    MembershipDTO getById(Integer id);
+    MembershipDTO getById(Long id);
 
     List<MembershipDTO> getAll();
 
-    List<MembershipDTO> getByPlayer(Integer playerId);
+    List<MembershipDTO> getByPlayer(Long playerId);
 
-    List<MembershipDTO> getByClub(Integer clubId);
+    List<MembershipDTO> getByClub(Long clubId);
 
-    MembershipDTO getCurrentByPlayer(Integer playerId);
+    MembershipDTO getCurrentByPlayer(Long playerId);
 
-    MembershipDTO update(Integer id, MembershipDTO updated);
+    MembershipDTO update(Long id, MembershipDTO updated);
 
-    void delete(Integer id);
+    void delete(Long id);
 
-    MembershipDTO transferPlayer(Integer playerId, MembershipDTO newMembership);
+    MembershipDTO transferPlayer(Long playerId, MembershipDTO newMembership);
 
-    void endMembership(Integer membershipId);
+    void endMembership(Long membershipId);
 
-    void createPerformance(Integer membershipId, Integer matchId,
+    void createPerformance(Long membershipId, Long matchId,
                            int goals, int assists, int minutes,
                            int yellow, int red);
 
-    void updatePerformance(Integer membershipId, Integer matchId,
+    void updatePerformance(Long membershipId, Long matchId,
                            int goals, int assists, int minutes,
                            int yellow, int red);
 
-    void deletePerformance(Integer membershipId, Integer matchId);
+    void deletePerformance(Long membershipId, Long matchId);
 }

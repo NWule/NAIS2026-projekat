@@ -8,7 +8,7 @@ import java.util.List;
 public class Match {
 
     @Id
-    private Integer matchId;
+    private Long matchId;
     private LocalDate date;
     private String competition;
     private String stadium;
@@ -18,14 +18,14 @@ public class Match {
 
     public Match() {}
 
-    public Match(Integer matchId, LocalDate date, String competition, String stadium) {
+    public Match(Long matchId, LocalDate date, String competition, String stadium) {
         this.matchId = matchId;
         this.date = date;
         this.competition = competition;
         this.stadium = stadium;
     }
 
-    public Integer getMatchId() {
+    public Long getMatchId() {
         return matchId;
     }
 
@@ -45,7 +45,7 @@ public class Match {
         return performances;
     }
 
-    public void setMatchId(Integer matchId) {
+    public void setMatchId(Long matchId) {
         this.matchId = matchId;
     }
 

@@ -4,20 +4,20 @@ import java.time.LocalDate;
 
 public class MembershipDTO {
 
-    private Integer id;
+    private Long id;
 
     private LocalDate fromDate;
     private LocalDate toDate;
     private Integer jerseyNumber;
 
-    private Integer playerId;
-    private Integer clubId;
+    private Long playerId;
+    private Long clubId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,19 +45,19 @@ public class MembershipDTO {
         this.jerseyNumber = jerseyNumber;
     }
 
-    public Integer getPlayerId() {
+    public Long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(Integer playerId) {
+    public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 
-    public Integer getClubId() {
+    public Long getClubId() {
         return clubId;
     }
 
-    public void setClubId(Integer clubId) {
+    public void setClubId(Long clubId) {
         this.clubId = clubId;
     }
 }

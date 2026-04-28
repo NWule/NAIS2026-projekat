@@ -22,7 +22,7 @@ public class MatchController {
     }
 
     @GetMapping("/{id}")
-    public MatchDTO getById(@PathVariable Integer id) {
+    public MatchDTO getById(@PathVariable Long id) {
         return matchService.getById(id);
     }
 
@@ -32,13 +32,13 @@ public class MatchController {
     }
 
     @PutMapping("/{id}")
-    public MatchDTO update(@PathVariable Integer id,
+    public MatchDTO update(@PathVariable Long id,
                            @RequestBody MatchDTO dto) {
         return matchService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         matchService.delete(id);
     }
 }

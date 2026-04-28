@@ -2,16 +2,16 @@ package com.example.RecommendedActivityService.dto;
 
 public class ClubDTO {
 
-    private Integer clubId;
+    private Long clubId;
     private String name;
     private String crest;
     private int wins;
     private int losses;
     private int draws;
 
-    public Integer getClubId() {return clubId; }
+    public Long getClubId() {return clubId; }
 
-    public void setClubId(Integer clubId) {this.clubId = clubId;}
+    public void setClubId(Long clubId) {this.clubId = clubId;}
 
     public String getName() {return name;}
 

@@ -8,11 +8,11 @@ public interface IMatchService {
 
     MatchDTO create(MatchDTO match);
 
-    MatchDTO getById(Integer id);
+    MatchDTO getById(Long id);
 
     List<MatchDTO> getAll();
 
-    MatchDTO update(Integer id, MatchDTO match);
+    MatchDTO update(Long id, MatchDTO match);
 
-    void delete(Integer id);
+    void delete(Long id);
 }

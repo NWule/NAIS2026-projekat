@@ -4,18 +4,18 @@ import java.util.Date;
 
 public class PlayerDTO {
 
-    private Integer playerId;
+    private Long playerId;
     private String name;
     private String surname;
     private String position;
     private Date dateOfBirth;
     private int height;
 
-    public Integer getPlayerId() {
+    public Long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(Integer playerId) {
+    public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 
