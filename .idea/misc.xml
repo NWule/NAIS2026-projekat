@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/GatewayService/pom.xml" />
         <option value="$PROJECT_DIR$/GraphDatabaseService/pom.xml" />
         <option value="$PROJECT_DIR$/RecommendedActivityService/pom.xml" />
+        <option value="$PROJECT_DIR$/LiveMatchService/pom.xml" />
       </list>
     </option>
   </component>
