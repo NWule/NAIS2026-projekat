@@ -1,4 +1,4 @@
 package NAIS.PlayerInfoService.service;
 
-public interface Iasdas {
+public interface IArticleService {
 }
