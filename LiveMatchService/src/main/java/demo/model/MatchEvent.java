@@ -6,7 +6,7 @@ public class MatchEvent {
     private String matchId;
     private String playerId;
     private String clubId;
-    private String tipDogadjaja;
+    private String eventType;
 
     private String _field;
     private Double _value;
@@ -19,7 +19,7 @@ public class MatchEvent {
         this.matchId = matchId;
         this.playerId = playerId;
         this.clubId = clubId;
-        this.tipDogadjaja = tipDogadjaja;
+        this.eventType = tipDogadjaja;
         this._field = _field;
         this._value = _value;
         this.created = created;
@@ -34,8 +34,8 @@ public class MatchEvent {
     public String getClubId() { return clubId; }
     public void setClubId(String clubId) { this.clubId = clubId; }
 
-    public String getTipDogadjaja() { return tipDogadjaja; }
-    public void setTipDogadjaja(String tipDogadjaja) { this.tipDogadjaja = tipDogadjaja; }
+    public String getEventType() { return eventType; }
+    public void setEventType(String eventType) { this.eventType = eventType; }
 
     public String get_field() { return _field; }
     public void set_field(String _field) { this._field = _field; }
