@@ -154,24 +154,28 @@ services:
       timeout: 10s
       retries: 5
 
-  live-match-service:
-      build:
-        context: ./LiveMatchService
-        dockerfile: Dockerfile
-      image: live-match-service:latest
-      ports:
-        - "9000:9000"
-      environment:
-        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
-        - INFLUXDB_URL=http://influxdb:8086
-        - INFLUXDB_TOKEN=my-super-secret-token-12345
-        - INFLUXDB_ORG=nais
-        - INFLUXDB_BUCKET=match_events
-      depends_on:
-        eureka-server:
-          condition: service_healthy
-        influxdb:
-          condition: service_healthy
+  llive-match-service:
+    build:
+      context: ./LiveMatchService
+      dockerfile: Dockerfile
+    image: live-match-service:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=my-super-secret-token-12345
+      - INFLUXDB_ORG=nais
+      - INFLUXDB_BUCKET=match_events
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
 
 

@@ -8,5 +8,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:6.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-redis:4.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:6.0.3" level="project" />
+    <orderEntry type="library" name="Maven: com.influxdb:influxdb-client-java:7.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:6.0.3" level="project" />
+    <orderEntry type="library" name="Maven: com.influxdb:influxdb-client-core:7.0.0" level="project" />
   </component>
 </module>
