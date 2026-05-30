@@ -90,16 +90,18 @@ services:
       timeout: 10s
       retries: 5
 
-  #  graph-service:
-  #    build:
-  #      context: ./PlayerRecommendationService
-  #      dockerfile: Dockerfile
-  #    image: player-recommendation-service:latest
-#    depends_on:
-#      - eureka-server
-#      - neo4j-player-recommendation
-#    ports:
-#      - "9070:9070"
+  player-info-db:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    container_name: player-info-db
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - player_info_data:/usr/share/elasticsearch/data
 
   neo4j-recommended:
     image: neo4j:5
@@ -180,3 +182,4 @@ volumes: # Declares named volumes for persistent data storage across container r
   neo4j_data: {}
   neo4j_recommended_data: {}
   influxdb_data: {}
+  player_info_data: {}
