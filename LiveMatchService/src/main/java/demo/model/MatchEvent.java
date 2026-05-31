@@ -1,16 +1,31 @@
 package demo.model;
 
+import com.influxdb.annotations.Column;
+import com.influxdb.annotations.Measurement;
+
 import java.time.Instant;
 
+@Measurement(name = "match_events")
 public class MatchEvent {
+    @Column(tag = true, name = "match_id")
     private String matchId;
+
+    @Column(tag = true, name = "player_id")
     private String playerId;
+
+    @Column(tag = true, name = "club_id")
     private String clubId;
+
+    @Column(tag = true, name = "event_type")
     private String eventType;
 
+    @Column(name = "_field")
     private String _field;
+
+    @Column(name = "_value")
     private Double _value;
 
+    @Column(timestamp = true)
     private Instant created;
 
     public MatchEvent() {}

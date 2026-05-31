@@ -16,5 +16,7 @@
     <orderEntry type="library" name="Maven: com.influxdb:influxdb-client-java:7.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:6.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.influxdb:influxdb-client-core:7.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.14.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1" level="project" />
   </component>
 </module>
