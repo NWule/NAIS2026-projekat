@@ -1,9 +1,11 @@
 package NAIS.PlayerInfoService.controller;
 
 import NAIS.PlayerInfoService.dto.ArticleDTO;
+import NAIS.PlayerInfoService.dto.MediaRiskResponse;
 import NAIS.PlayerInfoService.model.Article;
 import NAIS.PlayerInfoService.service.IArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,27 +17,34 @@ public class ArticleController {
     private final IArticleService articleService;
 
     @GetMapping("/all")
-    public List<Article> getAllArticles() {
-        return articleService.getAllArticles();
+    public ResponseEntity<List<Article>> getAllArticles() {
+        return ResponseEntity.ok(articleService.getAllArticles());
     }
 
     @GetMapping("/{id}")
-    public Article getArticleById(@PathVariable String id) {
-        return articleService.getArticleById(id);
+    public ResponseEntity<Article> getArticleById(@PathVariable String id) {
+        return ResponseEntity.ok(articleService.getArticleById(id));
     }
 
     @PostMapping("/save")
-    public Article saveArticle(@RequestBody ArticleDTO article) {
-        return articleService.saveArticle(article);
+    public ResponseEntity<Article> saveArticle(@RequestBody ArticleDTO article) {
+        return ResponseEntity.ok(articleService.saveArticle(article));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteArticle(@PathVariable String id) {
+    public ResponseEntity<Article> deleteArticle(@PathVariable String id) {
         articleService.deleteArticle(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update/{id}")
-    public Article updateArticle(@PathVariable String id, @RequestBody ArticleDTO article) {
-        return articleService.updateArticle(id, article);
+    public ResponseEntity<Article> updateArticle(@PathVariable String id, @RequestBody ArticleDTO article) {
+        return ResponseEntity.ok(articleService.updateArticle(id, article));
+    }
+
+    @GetMapping("/media-risk/{playerId}")
+    public ResponseEntity<MediaRiskResponse> getPlayerMediaRisk(@PathVariable String playerId) {
+        MediaRiskResponse response = articleService.analyzePlayerMediaRisk(playerId);
+        return ResponseEntity.ok(response);
     }
 }

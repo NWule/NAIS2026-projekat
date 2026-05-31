@@ -68,7 +68,7 @@ def generate_articles():
             "_source": {
                 "articleId": str(uuid.uuid4()),
                 "playerId": random.choice(player_ids),
-                "title": fake.catch_phrase().title() + " - " + random.choice(["Transfer Rumor", "Injury Update", "Match Performance", "Interview"]),
+                "title": fake.catch_phrase().title() + " - " + random.choice(["Transfer Rumor", "Injury Update", "Match Performance", "Interview", "Incident Report"]),
                 "content": fake.text(max_nb_chars=500),
                 "source": random.choice(sources_pool),
                 # Sentiment score od -1.0 (veoma negativno) do 1.0 (veoma pozitivno)
