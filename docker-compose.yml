@@ -127,7 +127,7 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.12.2
-    container_name: scouting-kibana
+    container_name: kibana
     ports:
       - "5601:5601"                          
     environment:
@@ -209,6 +209,25 @@ services:
         influxdb:
           condition: service_healthy
 
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight
+    restart: always
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight_data:/db
+    depends_on:
+      - redis
 
 
 volumes: # Declares named volumes for persistent data storage across container restarts
@@ -217,3 +236,5 @@ volumes: # Declares named volumes for persistent data storage across container r
   neo4j_recommended_data: {}
   influxdb_data: {}
   player_info_data: {}
+  redis_data: {}
+  redisinsight_data: {}
