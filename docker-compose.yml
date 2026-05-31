@@ -69,20 +69,33 @@ services:
         condition: service_healthy
       neo4j:
         condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_NEO4J_URI: bolt://neo4j:7687
+      SPRING_NEO4J_AUTHENTICATION_USERNAME: neo4j
+      SPRING_NEO4J_AUTHENTICATION_PASSWORD: password
+    ports:
+      - "9070:9070"
+
+  ticket-search-service:
+    build:
+      context: ./TicketSearchService
+      dockerfile: Dockerfile
+    image: ticket-search-service:latest
+    depends_on:
+      eureka-server:
+        condition: service_healthy
       elasticsearch:
         condition: service_healthy
       redis:
         condition: service_started
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
-      SPRING_NEO4J_URI: bolt://neo4j:7687
-      SPRING_NEO4J_AUTHENTICATION_USERNAME: neo4j
-      SPRING_NEO4J_AUTHENTICATION_PASSWORD: password
       ELASTICSEARCH_URIS: http://elasticsearch:9200
       REDIS_HOST: redis
       REDIS_PORT: 6379
     ports:
-      - "9070:9070"
+      - "9071:9071"
 
   elasticsearch:
     image: elasticsearch:8.11.0

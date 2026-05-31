@@ -1,4 +1,4 @@
-package rs.ac.uns.acs.nais.TicketSalesService.config;
+package rs.ac.uns.acs.nais.TicketSearchService.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
