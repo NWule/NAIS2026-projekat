@@ -6,18 +6,19 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.influxdb.client.DeleteApi;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.QueryApi;
 import com.influxdb.client.WriteApiBlocking;
 import com.influxdb.client.domain.WritePrecision;
-import com.influxdb.client.write.Point;
 import com.influxdb.exceptions.InfluxException;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
-import com.influxdb.client.DeleteApi;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+
 import demo.model.MatchEvent;
 
 @Component
@@ -59,14 +60,9 @@ public class InfluxDBConnectionClass {
         boolean flag = false;
         try {
             WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
-            matchEvent.setCreated(Instant.parse("2021-10-12T05:10:15.187484Z"));
-            Point point = Point.measurement("match_events")
-                    .addTag("player_id", matchEvent.getPlayerId())
-                    .addTag("match_id", matchEvent.getMatchId())
-                    .addField(matchEvent.get_field(), (double) matchEvent.get_value())
-                    .time(matchEvent.getCreated(), WritePrecision.MS);
+            matchEvent.setCreated(Instant.now());
+            writeApi.writeMeasurement(WritePrecision.MS, matchEvent);
 
-            writeApi.writePoint(point);
             flag = true;
         } catch (InfluxException e) {
         }
@@ -77,7 +73,7 @@ public class InfluxDBConnectionClass {
         boolean flag = false;
         try {
             WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
-            matchEvent.setCreated(Instant.parse("2021-10-12T05:10:15.187484Z"));
+            matchEvent.setCreated(Instant.now());
             writeApi.writeMeasurement(WritePrecision.MS, matchEvent);
             flag = true;
         } catch (InfluxException e) {
@@ -105,21 +101,39 @@ public class InfluxDBConnectionClass {
     }
 
     private List<MatchEvent> getMatchEvents(QueryApi queryApi, String flux) {
-        List<MatchEvent> matchEvents = new ArrayList<>();
-        List<FluxTable> tables = queryApi.query(flux);
-        for (FluxTable fluxTable : tables) {
-            for (FluxRecord fluxRecord : fluxTable.getRecords()) {
-                MatchEvent matchEvent = new MatchEvent();
-                matchEvent.setMatchId((String) fluxRecord.getValueByKey("match_id"));
-                matchEvent.setPlayerId((String) fluxRecord.getValueByKey("player_id"));
-                matchEvent.set_field((String) fluxRecord.getValueByKey("_field"));
-                matchEvent.set_value((Double) fluxRecord.getValueByKey("_value"));
-                matchEvent.setCreated((Instant) fluxRecord.getValueByKey("_time"));
-                matchEvents.add(matchEvent);
+    List<MatchEvent> matchEvents = new ArrayList<>();
+    List<FluxTable> tables = queryApi.query(flux);
+    
+    for (FluxTable fluxTable : tables) {
+        for (FluxRecord fluxRecord : fluxTable.getRecords()) {
+            MatchEvent matchEvent = new MatchEvent();
+            
+            matchEvent.setMatchId(String.valueOf(fluxRecord.getValueByKey("match_id")));
+            matchEvent.setPlayerId(String.valueOf(fluxRecord.getValueByKey("player_id")));
+            matchEvent.setClubId(String.valueOf(fluxRecord.getValueByKey("club_id")));
+            matchEvent.setEventType(String.valueOf(fluxRecord.getValueByKey("event_type")));
+            matchEvent.set_field(String.valueOf(fluxRecord.getValueByKey("_field")));
+            
+            Object val = fluxRecord.getValueByKey("_value");
+            if (val instanceof Number) {
+                matchEvent.set_value(((Number) val).doubleValue());
+            } else if (val != null) {
+                try { matchEvent.set_value(Double.parseDouble(val.toString())); } 
+                catch (Exception e) { matchEvent.set_value(0.0); }
             }
+            
+            Object time = fluxRecord.getValueByKey("_time");
+            if (time instanceof Instant) {
+                matchEvent.setCreated((Instant) time);
+            } else {
+                matchEvent.setCreated(Instant.now()); 
+            }
+
+            matchEvents.add(matchEvent);
         }
-        return matchEvents;
     }
+    return matchEvents;
+}
 
     public boolean deleteRecord(InfluxDBClient influxDBClient, String playerId) {
         boolean flag = false;

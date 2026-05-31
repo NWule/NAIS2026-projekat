@@ -178,9 +178,8 @@ services:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=admin
       - DOCKER_INFLUXDB_INIT_PASSWORD=password12345
-      - DOCKER_INFLUXDB_INIT_ORG=nais
-      - DOCKER_INFLUXDB_INIT_BUCKET=match_events
-      # Token koji tvoja InfluxDBConnectionClass koristi za autentifikaciju
+      - DOCKER_INFLUXDB_INIT_ORG=nais_org 
+      - DOCKER_INFLUXDB_INIT_BUCKET=nais_bucket
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-token-12345
     volumes:
       - influxdb_data:/var/lib/influxdb2
@@ -190,7 +189,7 @@ services:
       timeout: 10s
       retries: 5
 
-  llive-match-service:
+  live-match-service:
     build:
       context: ./LiveMatchService
       dockerfile: Dockerfile
@@ -201,8 +200,8 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - INFLUXDB_URL=http://influxdb:8086
       - INFLUXDB_TOKEN=my-super-secret-token-12345
-      - INFLUXDB_ORG=nais
-      - INFLUXDB_BUCKET=match_events
+      - DOCKER_INFLUXDB_INIT_ORG=nais_org 
+      - DOCKER_INFLUXDB_INIT_BUCKET=nais_bucket
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
     depends_on:
@@ -221,6 +220,11 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   redisinsight:
     image: redis/redisinsight:latest

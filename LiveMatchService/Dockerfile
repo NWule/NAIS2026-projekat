@@ -1,7 +1,10 @@
 FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /workspace/app
 
-COPY . .
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
 RUN mvn install -DskipTests
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
@@ -15,4 +18,4 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
 EXPOSE 9000
 
-ENTRYPOINT ["java", "-cp", "/app:/app/lib/*", "demo.DemoApplication"]
+ENTRYPOINT ["java", "-cp", "/app:/app/lib/*", "demo.DemoApplication", "--debug"]

@@ -1,44 +1,40 @@
 package demo.service;
 
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
-import demo.model.MatchEvent;
-import demo.repository.MatchEventRepositoryImpl;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.stereotype.Service;
+
+import demo.model.MatchEvent;
+import demo.repository.MatchEventRepositoryImpl;
 
 @Service
+@EnableCaching
 public class MatchEventService {
 
     private final MatchEventRepositoryImpl matchEventRepository;
-    private final StringRedisTemplate redisTemplate;
 
-    public MatchEventService(MatchEventRepositoryImpl matchEventRepository, StringRedisTemplate redisTemplate) {
+    public MatchEventService(MatchEventRepositoryImpl matchEventRepository) {
         this.matchEventRepository = matchEventRepository;
-        this.redisTemplate = redisTemplate;
     }
 
+
+    @CacheEvict(value = "matchEvents", key = "#matchEvent.matchId",
+            condition = "#matchEvent.eventType != null and (#matchEvent.eventType.toLowerCase() == 'goal' or #matchEvent.eventType.toLowerCase() == 'red_card')"
+    )
     public boolean save(MatchEvent matchEvent) {
-        boolean savedToInflux = matchEventRepository.save(matchEvent);
-
-        if (savedToInflux && matchEvent.getMatchId() != null) {
-            String redisKey = "match:" + matchEvent.getMatchId() + ":stats";
-            String eventType = matchEvent.getEventType();
-
-            if (eventType != null) {
-                redisTemplate.opsForHash().increment(redisKey, eventType.toLowerCase(), 1);
-            }
-        }
-
-        return savedToInflux;
+        return matchEventRepository.save(matchEvent);
     }
 
     public List<MatchEvent> findAll() {
         return matchEventRepository.retrieveDataFromInfluxDB();
     }
 
+    @Cacheable(value = "matchEvents", key = "#matchId", condition = "#matchId != null")
     public List<MatchEvent> findAllByMatchId(String matchId) {
         return matchEventRepository.findAllByMatchId(matchId);
     }
@@ -51,10 +47,25 @@ public class MatchEventService {
         return matchEventRepository.deleteRecord(playerId);
     }
 
-    public Map<Object, Object> getLiveStats(String matchId) {
-        String redisKey = "match:" + matchId + ":stats";
-        return redisTemplate.opsForHash().entries(redisKey);
+
+    public Map<String, Map<String, Long>> getLiveStats(String matchId) {
+    List<MatchEvent> events = findAllByMatchId(matchId);
+    
+    Map<String, Map<String, Long>> stats = new HashMap<>();
+
+    if (events != null) {
+        for (MatchEvent event : events) {
+            String clubId = event.getClubId();
+            String type = (event.getEventType() != null) ? event.getEventType().toLowerCase() : "unknown";
+
+            stats.putIfAbsent(clubId, new HashMap<>());
+            
+            Map<String, Long> clubStats = stats.get(clubId);
+            clubStats.put(type, clubStats.getOrDefault(type, 0L) + 1);
+        }
     }
+    return stats;
+}
 
     public Map<String, Long> getTopScorers() {
         return matchEventRepository.findTopScorers();
