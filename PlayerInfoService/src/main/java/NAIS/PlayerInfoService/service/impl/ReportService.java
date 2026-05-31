@@ -4,17 +4,26 @@ import NAIS.PlayerInfoService.dto.ReportDTO;
 import NAIS.PlayerInfoService.model.Report;
 import NAIS.PlayerInfoService.repository.ReportRepository;
 import NAIS.PlayerInfoService.service.IReportService;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
 public class ReportService implements IReportService {
     private final ReportRepository reportRepo;
+    private final ElasticsearchTemplate elasticsearchTemplate;
 
     public Report saveReport(ReportDTO report) {
         Report newReport = new Report();
@@ -67,5 +76,34 @@ public class ReportService implements IReportService {
             }
         }
         return reportRepo.save(existingReport);
+    }
+
+    public List<String> globalReportSearch(String textCriteria) {
+
+        if (textCriteria == null || textCriteria.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Query multiMatchQuery = Query.of(q -> q.multiMatch(m -> m
+                .fields("psychologicalProfile", "tacticalNotes", "weaknesses", "tags^2")
+                .query(textCriteria)
+                .fuzziness("AUTO")
+                .analyzer("english")
+        ));
+
+        FetchSourceFilter sourceFilter = new FetchSourceFilter(new String[]{"playerId"}, null);
+
+        NativeQuery nativeQuery = NativeQuery.builder()
+                .withQuery(multiMatchQuery)
+                .withSourceFilter(sourceFilter)
+                .build();
+
+        SearchHits<Report> searchHits = elasticsearchTemplate.search(nativeQuery, Report.class);
+
+        return searchHits.getSearchHits().stream()
+                .map(SearchHit::getContent)
+                .map(Report::getPlayerId)
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

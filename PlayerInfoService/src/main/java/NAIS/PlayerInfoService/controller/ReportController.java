@@ -38,4 +38,9 @@ public class ReportController {
     public Report updateReport(@PathVariable String id, @RequestBody ReportDTO report) {
         return reportService.updateReport(id, report);
     }
+
+    @GetMapping("/search")
+    public List<String> globalReportSearch(@RequestParam(required = false) String textCriteria) {
+        return reportService.globalReportSearch(textCriteria);
+    }
 }

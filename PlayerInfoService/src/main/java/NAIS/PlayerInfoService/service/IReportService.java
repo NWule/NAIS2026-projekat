@@ -13,4 +13,5 @@ public interface IReportService {
     Report saveReport(ReportDTO report);
     void deleteReport(String id);
     Report updateReport(String id, ReportDTO report);
+    List<String> globalReportSearch(String textCriteria);
 }
