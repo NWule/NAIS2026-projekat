@@ -13,6 +13,7 @@ import co.elastic.clients.json.JsonData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregation;
@@ -67,6 +68,15 @@ public class ReportService implements IReportService {
         reportRepo.deleteById(id);
     }
 
+    @Caching(
+            put = {
+                    @CachePut(value = "singleReportCache", key = "#id", unless = "#result == null")
+            },
+            evict = {
+                    @CacheEvict(value = "playerTiersCache", allEntries = true),
+                    @CacheEvict(value = "tacticalTrendsCache", allEntries = true)
+            }
+    )
     public Report updateReport(String id, ReportDTO report) {
         Report existingReport = reportRepo.findById(id).orElse(null);
         if (existingReport != null) {

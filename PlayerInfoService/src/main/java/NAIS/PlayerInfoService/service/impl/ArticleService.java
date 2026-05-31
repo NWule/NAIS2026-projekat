@@ -10,7 +10,9 @@ import co.elastic.clients.elasticsearch._types.aggregations.*;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregation;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregations;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
@@ -58,6 +60,14 @@ public class ArticleService implements IArticleService {
         articleRepo.deleteById(id);
     }
 
+    @Caching(
+            put = {
+                    @CachePut(value = "singleArticleCache", key = "#id", unless = "#result == null")
+            },
+            evict = {
+                    @CacheEvict(value = "mediaRiskCache", allEntries = true),
+            }
+    )
     public Article updateArticle(String id, ArticleDTO article) {
         Article existingArticle = articleRepo.findById(id).orElse(null);
         if (existingArticle != null) {
