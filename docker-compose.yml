@@ -90,16 +90,52 @@ services:
       timeout: 10s
       retries: 5
 
-  #  graph-service:
-  #    build:
-  #      context: ./PlayerRecommendationService
-  #      dockerfile: Dockerfile
-  #    image: player-recommendation-service:latest
-#    depends_on:
-#      - eureka-server
-#      - neo4j-player-recommendation
-#    ports:
-#      - "9070:9070"
+  player-info-service:
+    build:
+      context: ./PlayerInfoService
+      dockerfile: Dockerfile
+    image: player-info-service:latest
+    environment:
+      - SPRING_ELASTICSEARCH_URIS=http://player-info-db:9200
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      player-info-db:
+        condition: service_healthy
+    ports:
+      - "9090:9090"
+
+
+  player-info-db:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    container_name: player-info-db
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - player_info_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.2
+    container_name: kibana
+    ports:
+      - "5601:5601"                          
+    environment:
+      - ELASTICSEARCH_HOSTS=http://player-info-db:9200
+      - XPACK_SECURITY_ENABLED=false
+    depends_on:
+      player-info-db:
+        condition: service_healthy
 
   neo4j-recommended:
     image: neo4j:5
@@ -177,6 +213,25 @@ services:
       redis:
         condition: service_healthy
 
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight
+    restart: always
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight_data:/db
+    depends_on:
+      - redis
 
 
 volumes: # Declares named volumes for persistent data storage across container restarts
@@ -184,3 +239,6 @@ volumes: # Declares named volumes for persistent data storage across container r
   neo4j_data: {}
   neo4j_recommended_data: {}
   influxdb_data: {}
+  player_info_data: {}
+  redis_data: {}
+  redisinsight_data: {}
