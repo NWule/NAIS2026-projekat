@@ -1,4 +1,4 @@
-package rs.ac.uns.acs.nais.TicketSalesService;
+package rs.ac.uns.acs.nais.TicketSearchService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class TicketSalesServiceApplication {
+public class TicketSearchServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TicketSalesServiceApplication.class, args);
+        SpringApplication.run(TicketSearchServiceApplication.class, args);
     }
 }

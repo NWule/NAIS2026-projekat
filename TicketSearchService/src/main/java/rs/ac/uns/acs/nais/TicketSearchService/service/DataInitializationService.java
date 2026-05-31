@@ -1,12 +1,12 @@
-package rs.ac.uns.acs.nais.TicketSalesService.service;
+package rs.ac.uns.acs.nais.TicketSearchService.service;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
-import rs.ac.uns.acs.nais.TicketSalesService.model.elastic.EventDocument;
-import rs.ac.uns.acs.nais.TicketSalesService.model.elastic.TicketSaleDocument;
-import rs.ac.uns.acs.nais.TicketSalesService.repository.elastic.EventElasticRepository;
-import rs.ac.uns.acs.nais.TicketSalesService.repository.elastic.TicketSaleElasticRepository;
+import rs.ac.uns.acs.nais.TicketSearchService.model.elastic.EventDocument;
+import rs.ac.uns.acs.nais.TicketSearchService.model.elastic.TicketSaleDocument;
+import rs.ac.uns.acs.nais.TicketSearchService.repository.elastic.EventElasticRepository;
+import rs.ac.uns.acs.nais.TicketSearchService.repository.elastic.TicketSaleElasticRepository;
 
 import java.util.*;
 
@@ -15,7 +15,6 @@ public class DataInitializationService implements ApplicationRunner {
 
     private static final int TARGET_EVENTS = 1000;
     private static final int TARGET_TICKETS = 1200;
-
     private static final String HOME_TEAM = "FK Vojvodina";
     private static final String VENUE = "Stadion Karadjordje";
     private static final String CITY = "Novi Sad";
@@ -25,72 +24,59 @@ public class DataInitializationService implements ApplicationRunner {
     private final TicketSaleElasticRepository ticketRepo;
     private final Random random = new Random(42);
 
-    private static final String[] COMPETITIONS = {
-            "SUPER_LIGA", "KUP_SRBIJE", "PRIJATELJSKA", "EVROPSKA_LIGA", "KONFERENCIJSKA_LIGA"
-    };
+    private static final String[] COMPETITIONS = {"SUPER_LIGA", "KUP_SRBIJE", "PRIJATELJSKA", "EVROPSKA_LIGA", "KONFERENCIJSKA_LIGA"};
     private static final String[] STATUSES = {"UPCOMING", "COMPLETED", "ONGOING", "CANCELLED"};
     private static final String[] AWAY_TEAMS = {
-            "FK Partizan", "FK Crvena zvezda", "FK Radnicki Nis", "FK Cukaricki",
-            "FK Napredak", "FK Javor", "FK Spartak Subotica", "FK Backa",
-            "FK Proleter Novi Sad", "FK TSC Backa Topola", "FK Metalac",
-            "FK OFK Beograd", "FK Radnik Surdulica", "FK Novi Pazar",
-            "FK Vozdovac", "FK Indija", "FK Sloboda Point Sevojno",
-            "Real Madrid CF", "Ajax Amsterdam", "Fenerbahce SK",
-            "GNK Dinamo Zagreb", "NK Maribor", "HNK Hajduk Split", "HNK Rijeka",
-            "FK CSKA Moskva", "Ludogorets Razgrad", "FK Zalgiris Vilnius",
-            "Shamrock Rovers FC", "FK Aktobe", "Hibernian FC",
-            "FC Zurich", "Servette FC", "FC Basel", "Young Boys",
-            "FC Copenhagen", "Brondby IF", "Midtjylland",
-            "Galatasaray SK", "Trabzonspor", "Besiktas JK",
-            "Sporting CP", "SC Braga", "Vitoria Guimaraes",
-            "RSC Anderlecht", "Club Brugge", "KAA Gent",
-            "Ferencvaros TC", "MTK Budapest FC", "Paksi FC"
+        "FK Partizan", "FK Crvena zvezda", "FK Radnicki Nis", "FK Cukaricki",
+        "FK Napredak", "FK Javor", "FK Spartak Subotica", "FK Backa",
+        "FK Proleter Novi Sad", "FK TSC Backa Topola", "FK Metalac",
+        "FK OFK Beograd", "FK Radnik Surdulica", "FK Novi Pazar",
+        "FK Vozdovac", "FK Indija", "FK Sloboda Point Sevojno",
+        "Real Madrid CF", "Ajax Amsterdam", "Fenerbahce SK",
+        "GNK Dinamo Zagreb", "NK Maribor", "HNK Hajduk Split", "HNK Rijeka",
+        "FK CSKA Moskva", "Ludogorets Razgrad", "FK Zalgiris Vilnius",
+        "Shamrock Rovers FC", "FK Aktobe", "Hibernian FC",
+        "FC Zurich", "Servette FC", "FC Basel", "Young Boys",
+        "FC Copenhagen", "Brondby IF", "Midtjylland",
+        "Galatasaray SK", "Trabzonspor", "Besiktas JK",
+        "Sporting CP", "SC Braga", "Vitoria Guimaraes",
+        "RSC Anderlecht", "Club Brugge", "KAA Gent",
+        "Ferencvaros TC", "MTK Budapest FC", "Paksi FC"
     };
     private static final String[] TICKET_TYPES = {"STANDARD", "VIP", "FAMILY", "GROUP", "STUDENT"};
-    private static final String[] PAYMENT_METHODS = {
-            "CREDIT_CARD", "DEBIT_CARD", "CASH", "ONLINE_BANKING", "PAYPAL"
-    };
-    private static final String[] ZONE_NAMES = {
-            "VIP Tribina", "Tribina Sever", "Tribina Jug", "Gostujuca Tribina", "Centralni Sektor"
-    };
+    private static final String[] PAYMENT_METHODS = {"CREDIT_CARD", "DEBIT_CARD", "CASH", "ONLINE_BANKING", "PAYPAL"};
+    private static final String[] ZONE_NAMES = {"VIP Tribina", "Tribina Sever", "Tribina Jug", "Gostujuca Tribina", "Centralni Sektor"};
     private static final String[] SEAT_CATEGORIES = {"VIP", "STANDARD", "ECONOMY"};
     private static final String[] CUSTOMER_NAMES = {
-            "Marko Markovic", "Ana Jovic", "Stefan Nikolic", "Milica Petrovic",
-            "Nikola Stojanovic", "Jelena Ilic", "Aleksandar Popovic", "Ivana Djordjevic",
-            "Vladimir Milosevic", "Natasa Jovanovic", "Dusan Savic", "Maja Lazic",
-            "Bojan Petrovic", "Dragana Pavlovic", "Milan Kovacevic", "Tamara Stojanovic",
-            "Nemanja Ilic", "Kristina Radovic", "Uros Simic", "Sandra Markovic",
-            "Luka Milovanovic", "Jelena Stankovic", "Milos Ristovic", "Ivana Ninkovic",
-            "Darko Todorovic", "Vesna Jokic", "Srdjan Bogdanovic", "Maja Miric",
-            "Igor Arsenijevic", "Sanja Vukovic", "Petar Lazovic", "Marija Delic",
-            "Zoran Pavlovic", "Katarina Simic", "Dejan Antic", "Jovana Ristic",
-            "Mladen Jeremic", "Tanja Savic", "Danilo Radovanovic", "Lena Vukovic"
+        "Marko Markovic", "Ana Jovic", "Stefan Nikolic", "Milica Petrovic",
+        "Nikola Stojanovic", "Jelena Ilic", "Aleksandar Popovic", "Ivana Djordjevic",
+        "Vladimir Milosevic", "Natasa Jovanovic", "Dusan Savic", "Maja Lazic",
+        "Bojan Petrovic", "Dragana Pavlovic", "Milan Kovacevic", "Tamara Stojanovic",
+        "Nemanja Ilic", "Kristina Radovic", "Uros Simic", "Sandra Markovic",
+        "Luka Milovanovic", "Jelena Stankovic", "Milos Ristovic", "Ivana Ninkovic",
+        "Darko Todorovic", "Vesna Jokic", "Srdjan Bogdanovic", "Maja Miric",
+        "Igor Arsenijevic", "Sanja Vukovic", "Petar Lazovic", "Marija Delic",
+        "Zoran Pavlovic", "Katarina Simic", "Dejan Antic", "Jovana Ristic",
+        "Mladen Jeremic", "Tanja Savic", "Danilo Radovanovic", "Lena Vukovic"
     };
 
-    public DataInitializationService(EventElasticRepository eventRepo,
-                                     TicketSaleElasticRepository ticketRepo) {
+    public DataInitializationService(EventElasticRepository eventRepo, TicketSaleElasticRepository ticketRepo) {
         this.eventRepo = eventRepo;
         this.ticketRepo = ticketRepo;
     }
 
     @Override
     public void run(ApplicationArguments args) {
-        if (eventRepo.count() < TARGET_EVENTS) {
-            initEvents();
-        }
-        if (ticketRepo.count() < TARGET_TICKETS) {
-            initTicketSales();
-        }
+        if (eventRepo.count() < TARGET_EVENTS) initEvents();
+        if (ticketRepo.count() < TARGET_TICKETS) initTicketSales();
     }
 
     private void initEvents() {
         List<EventDocument> events = new ArrayList<>();
-
         int baseYear = 2015;
         for (int i = 0; i < TARGET_EVENTS; i++) {
             String awayTeam = AWAY_TEAMS[i % AWAY_TEAMS.length];
             String competition = COMPETITIONS[i % COMPETITIONS.length];
-
             int season = baseYear + (i / 40);
             int month = 1 + (i % 10);
             int day = 1 + (i % 28);
@@ -111,7 +97,6 @@ public class DataInitializationService implements ApplicationRunner {
             doc.setDate(String.format("%04d-%02d-%02d", season, month, day));
             events.add(doc);
         }
-
         eventRepo.saveAll(events);
     }
 
@@ -136,7 +121,6 @@ public class DataInitializationService implements ApplicationRunner {
                 double discountPercent = (random.nextInt(4)) * 5.0;
                 double multiplier = 0.8 + random.nextInt(15) * 0.1;
                 double finalPrice = Math.round(event.getBasePrice() * multiplier * (1.0 - discountPercent / 100.0) * 100.0) / 100.0;
-
                 int year = 2020 + random.nextInt(5);
                 int month = 1 + random.nextInt(12);
                 int day = 1 + random.nextInt(28);
@@ -164,7 +148,6 @@ public class DataInitializationService implements ApplicationRunner {
                 tickets.add(ticket);
             }
         }
-
         ticketRepo.saveAll(tickets);
     }
 }

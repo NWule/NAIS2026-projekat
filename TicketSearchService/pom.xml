@@ -10,10 +10,10 @@
 	</parent>
 
 	<groupId>rs.ac.uns.acs.nais</groupId>
-	<artifactId>TicketSalesService</artifactId>
+	<artifactId>TicketSearchService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>TicketSalesService</name>
-	<description>Ticket Sales Subsystem - Graph Database Microservice (Neo4j)</description>
+	<name>TicketSearchService</name>
+	<description>Ticket Search and Analytics Service - Elasticsearch and Redis</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -35,11 +35,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-neo4j</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -72,7 +76,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>rs.ac.uns.acs.nais.TicketSalesService.TicketSalesServiceApplication</mainClass>
+					<mainClass>rs.ac.uns.acs.nais.TicketSearchService.TicketSearchServiceApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

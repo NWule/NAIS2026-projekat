@@ -40,6 +40,12 @@ spring:
             - Path=/ticket-sales-service/**
           filters:
             - StripPrefix=1
+        - id: ticket-search-service
+          uri: lb://ticket-search-service
+          predicates:
+            - Path=/ticket-search-service/**
+          filters:
+            - StripPrefix=1
         - id: vector-database-service
           uri: lb://vector-database-service
           predicates:
