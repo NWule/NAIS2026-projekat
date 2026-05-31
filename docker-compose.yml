@@ -65,15 +65,40 @@ services:
       dockerfile: Dockerfile
     image: ticket-sales-service:latest
     depends_on:
-      - eureka-server
-      - neo4j
+      eureka-server:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_started
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING_NEO4J_URI: bolt://neo4j:7687
       SPRING_NEO4J_AUTHENTICATION_USERNAME: neo4j
       SPRING_NEO4J_AUTHENTICATION_PASSWORD: password
+      ELASTICSEARCH_URIS: http://elasticsearch:9200
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     ports:
       - "9070:9070"
+
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    ports:
+      - "9201:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
 
   neo4j:
     image: neo4j:5
@@ -234,11 +259,12 @@ services:
       - redis
 
 
-volumes: # Declares named volumes for persistent data storage across container restarts
+volumes:
   neo4j_player_recommendation_data: {}
   neo4j_data: {}
   neo4j_recommended_data: {}
   influxdb_data: {}
   player_info_data: {}
+  elasticsearch_data: {}
   redis_data: {}
   redisinsight_data: {}
