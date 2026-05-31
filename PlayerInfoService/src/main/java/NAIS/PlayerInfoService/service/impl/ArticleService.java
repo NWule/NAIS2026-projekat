@@ -9,6 +9,8 @@ import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.*;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregation;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregations;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
@@ -30,6 +32,7 @@ public class ArticleService implements IArticleService {
     private final ArticleRepository articleRepo;
     private final ElasticsearchTemplate elasticsearchTemplate;
 
+    @CacheEvict(value = "mediaRiskCache", key = "#article.playerId")
     public Article saveArticle(ArticleDTO article) {
         Article newArticle = new Article();
         newArticle.setPlayerId(article.getPlayerId());
@@ -46,6 +49,7 @@ public class ArticleService implements IArticleService {
         return StreamSupport.stream(iterable.spliterator(), false).toList();
     }
 
+    @Cacheable(value = "singleArticleCache", key = "#id", unless = "#result == null")
     public Article getArticleById(String id) {
         return articleRepo.findById(id).orElse(null);
     }
@@ -79,6 +83,11 @@ public class ArticleService implements IArticleService {
         return articleRepo.save(existingArticle);
     }
 
+    @Cacheable(
+            value = "mediaRiskCache",
+            key = "#playerId",
+            unless = "#result == null"
+    )
     public MediaRiskResponse analyzePlayerMediaRisk(String playerId) {
         Query playerFilter = Query.of(q -> q.term(t -> t.field("playerId").value(playerId)));
         Query mediaTextSearch = Query.of(q -> q.multiMatch(m -> m.fields("title", "content").query("injury incident")));

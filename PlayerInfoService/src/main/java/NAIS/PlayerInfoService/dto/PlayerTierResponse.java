@@ -16,6 +16,7 @@ public class PlayerTierResponse {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class TierStat {
         private String tierName;
         private long playerCount;

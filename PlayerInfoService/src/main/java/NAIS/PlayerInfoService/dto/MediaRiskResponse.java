@@ -17,6 +17,7 @@ public class MediaRiskResponse {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class MonthlyRisk {
         private String month;
         private Map<String, Long> sourcesCount;

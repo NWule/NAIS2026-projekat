@@ -12,6 +12,9 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregation;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregations;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
@@ -34,6 +37,10 @@ public class ReportService implements IReportService {
     private final ReportRepository reportRepo;
     private final ElasticsearchTemplate elasticsearchTemplate;
 
+    @Caching(evict = {
+            @CacheEvict(value = "playerTiersCache", allEntries = true),
+            @CacheEvict(value = "tacticalTrendsCache", allEntries = true)
+    })
     public Report saveReport(ReportDTO report) {
         Report newReport = new Report();
         newReport.setPlayerId(report.getPlayerId());
@@ -51,6 +58,7 @@ public class ReportService implements IReportService {
         return StreamSupport.stream(iterable.spliterator(), false).toList();
     }
 
+    @Cacheable(value = "singleReportCache", key = "#id", unless = "#result == null")
     public Report getReportById(String id) {
         return reportRepo.findById(id).orElse(null);
     }
@@ -116,6 +124,11 @@ public class ReportService implements IReportService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(
+            value = "tacticalTrendsCache",
+            key = "#tacticalSearch.toLowerCase().trim().concat('-').concat(#requiredTag.toLowerCase().trim())",
+            unless = "#result == null"
+    )
     public TacticalTrendResponse analyzeTacticalTrends(String tacticalSearch, String requiredTag) {
         Query tacticalFullText = Query.of(q -> q.match(m -> m.field("tacticalNotes").query(tacticalSearch)));
         Query tagFilter = Query.of(q -> q.term(t -> t.field("tags").value(requiredTag)));
@@ -146,6 +159,11 @@ public class ReportService implements IReportService {
         return convertSearchHitsToTacticalTrendResponse(elasticsearchTemplate.search(nativeQuery, Report.class));
     }
 
+    @Cacheable(
+            value = "playerTiersCache",
+            key = "#searchTerms.toLowerCase().trim()",
+            unless = "#result == null"
+    )
     public PlayerTierResponse analyzePlayerTiers(String searchTerms) {
         Query fuzzySearch = Query.of(q -> q.match(m -> m
                 .field("tacticalNotes")

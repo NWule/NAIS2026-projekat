@@ -16,6 +16,7 @@ public class TacticalTrendResponse {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class ScoutMaxRating {
         private String scoutId;
         private double maxRating;
