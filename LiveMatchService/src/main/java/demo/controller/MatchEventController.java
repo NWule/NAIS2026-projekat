@@ -7,6 +7,7 @@ import demo.model.MatchEvent;
 import demo.service.MatchEventService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/matchEvent.json")
@@ -49,5 +50,25 @@ public class MatchEventController {
         } else {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("getLiveStats")
+    public ResponseEntity<Map<Object, Object>> getLiveStats(@RequestParam("matchId") String matchId) {
+        return new ResponseEntity<>(matchEventService.getLiveStats(matchId), HttpStatus.OK);
+    }
+
+    @GetMapping("getTopScorers")
+    public ResponseEntity<Map<String, Long>> getTopScorers() {
+        return new ResponseEntity<>(matchEventService.getTopScorers(), HttpStatus.OK);
+    }
+
+    @GetMapping("getTeamFoulsByMatch")
+    public ResponseEntity<Map<String, Long>> getTeamFoulsByMatch(@RequestParam("matchId") String matchId) {
+        return new ResponseEntity<>(matchEventService.getTeamFoulsByMatch(matchId), HttpStatus.OK);
+    }
+
+    @GetMapping("getMostPassesInSingleMatch")
+    public ResponseEntity<Map<String, Long>> getMostPassesInSingleMatch() {
+        return new ResponseEntity<>(matchEventService.getMostPassesInSingleMatch(), HttpStatus.OK);
     }
 }

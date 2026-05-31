@@ -46,5 +46,11 @@ spring:
             - Path=/vector-database-service/**
           filters:
             - StripPrefix=1
+        - id: match-event-service
+          uri: lb://demo
+          predicates:
+            - Path=/match-event/**
+          filters:
+            - StripPrefix=1
         
 
