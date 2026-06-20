@@ -18,13 +18,18 @@ public class Performance {
     @TargetNode
     private Match match;
 
-    public Performance() {}
+    private Boolean isDeleted;
 
-    public Performance(int minutesPlayed, int goals, int assists, Match match) {
+    public Performance(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public Performance(int minutesPlayed, int goals, int assists, Match match, Boolean isDeleted) {
         this.minutesPlayed = minutesPlayed;
         this.goals = goals;
         this.assists = assists;
         this.match = match;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -77,5 +82,13 @@ public class Performance {
 
     public void setMatch(Match match) {
         this.match = match;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

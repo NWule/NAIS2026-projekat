@@ -16,13 +16,16 @@ public class Match {
     @Relationship(type = "HAS_PERFORMANCE", direction = Relationship.Direction.INCOMING)
     private List<Performance> performances;
 
-    public Match() {}
+    private Boolean isDeleted;
 
-    public Match(Long matchId, LocalDate date, String competition, String stadium) {
+    public Match() { this.isDeleted = false; }
+
+    public Match(Long matchId, LocalDate date, String competition, String stadium, Boolean isDeleted) {
         this.matchId = matchId;
         this.date = date;
         this.competition = competition;
         this.stadium = stadium;
+        this.isDeleted = isDeleted;
     }
 
     public Long getMatchId() {
@@ -65,4 +68,11 @@ public class Match {
         this.performances = performances;
     }
 
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 }

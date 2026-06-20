@@ -10,6 +10,12 @@ spring:
       username: ${SPRING_NEO4J_AUTHENTICATION_USERNAME:neo4j}
       password: ${SPRING_NEO4J_AUTHENTICATION_PASSWORD:password}
 
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+
 eureka:
   client:
     service-url:
