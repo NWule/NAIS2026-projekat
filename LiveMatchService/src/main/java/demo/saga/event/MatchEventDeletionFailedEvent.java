@@ -5,6 +5,8 @@ public class MatchEventDeletionFailedEvent {
     private Long matchId;
     private String reason;
 
+    public MatchEventDeletionFailedEvent() {}
+
     public MatchEventDeletionFailedEvent(String sagaId, Long matchId, String reason) {
         this.sagaId = sagaId;
         this.matchId = matchId;

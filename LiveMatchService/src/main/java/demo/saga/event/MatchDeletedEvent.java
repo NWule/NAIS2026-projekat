@@ -7,6 +7,8 @@ public class MatchDeletedEvent {
     private Long matchId;
     private LocalDateTime timestamp;
 
+    public MatchDeletedEvent() {}
+
     public MatchDeletedEvent(String sagaId, Long matchId, LocalDateTime timestamp) {
         this.sagaId = sagaId;
         this.matchId = matchId;
