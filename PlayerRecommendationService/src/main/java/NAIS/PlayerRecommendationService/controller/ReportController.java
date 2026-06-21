@@ -25,7 +25,7 @@ public class ReportController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Report> getReportById(@PathVariable Long id) {
+    public ResponseEntity<Report> getReportById(@PathVariable String id) {
         Report report = reportService.getReportById(id);
         if (report != null) {
             return ResponseEntity.ok(report);
@@ -33,18 +33,8 @@ public class ReportController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("")
-    public ResponseEntity<Report> saveReport(@RequestBody CreateReportDto newReport) {
-        try {
-            Report savedReport = reportService.saveReport(newReport);
-            return ResponseEntity.ok(savedReport);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     @PutMapping("")
-    public ResponseEntity<Report> updateReport(@RequestParam Long id, @RequestBody UpdateReportDto updatedReport) {
+    public ResponseEntity<Report> updateReport(@RequestParam String id, @RequestBody UpdateReportDto updatedReport) {
         Report report = reportService.updateReport(id, updatedReport);
         if (report != null) {
             return ResponseEntity.ok(report);
@@ -53,7 +43,7 @@ public class ReportController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Void> deleteReport(@RequestParam Long id) {
+    public ResponseEntity<Void> deleteReport(@RequestParam String id) {
         if (reportService.deleteReport(id)) {
             return ResponseEntity.ok().build();
         }
@@ -62,8 +52,8 @@ public class ReportController {
 
     @PatchMapping("/{reportId}/metrics/{metricId}")
     public ResponseEntity<Void> updateMetricScore(
-            @PathVariable Long reportId,
-            @PathVariable Long metricId,
+            @PathVariable String reportId,
+            @PathVariable String metricId,
             @RequestParam Integer score) {
 
         reportService.updateMetricScore(reportId, metricId, score);

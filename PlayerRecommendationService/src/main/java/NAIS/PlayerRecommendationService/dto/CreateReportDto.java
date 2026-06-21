@@ -12,5 +12,5 @@ public class CreateReportDto {
     private String game;
     private String scoutId;
     private String playerId;
-    private Map<Long, Integer> metricValues;
+    private Map<String, Integer> metricValues;
 }
