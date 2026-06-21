@@ -312,6 +312,22 @@ services:
       timeout: 5s
       retries: 3
 
+  grafana:
+    image: grafana/grafana:latest
+    user: "0"
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      # --- PLUGIN INSTALLATION ---
+      # ove dodati plug-ins koji su potrebni
+      - GF_PLUGINS_PREINSTALL=elasticsearch,kniepdennis-neo4j-datasource
+      - GF_INSTALL_PLUGINS=elasticsearch,kniepdennis-neo4j-datasource
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - grafana_storage:/var/lib/grafana
+
 volumes:
   neo4j_player_recommendation_data: {}
   neo4j_data: {}
@@ -322,3 +338,4 @@ volumes:
   redis_data: {}
   redisinsight_data: {}
   rabbitmq_data: {}
+  grafana_storage: {}
