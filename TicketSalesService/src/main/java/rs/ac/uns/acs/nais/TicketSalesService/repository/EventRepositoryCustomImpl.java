@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class EventRepositoryCustomImpl implements EventRepositoryCustom {
@@ -59,5 +60,17 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
                 "RETURN z.name AS zoneName, ROUND(occupancyRate * 100, 2) AS occupancyPercent, newMultiplier"
         ).bindAll(Map.of("eventId", eventId))
          .fetch().all());
+    }
+
+    @Override
+    public Optional<Map<String, Object>> findEventDataBySeatId(String seatId) {
+        return neo4jClient.query(
+                "MATCH (s:Seat {seatId: $seatId})-[:IN_ZONE]->(z:Zone)<-[:HAS_ZONE]-(e:Event) " +
+                "RETURN e.eventId AS eventId, e.name AS eventName, toString(e.date) AS eventDate, " +
+                "e.venue AS venue, e.eventType AS eventType, z.zoneId AS zoneId, z.name AS zoneName " +
+                "LIMIT 1"
+        ).bindAll(Map.of("seatId", seatId))
+         .fetch()
+         .one();
     }
 }
