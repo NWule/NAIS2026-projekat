@@ -34,9 +34,18 @@ services:
       context: ./PlayerRecommendationService
       dockerfile: Dockerfile
     image: player-recommendation-service:latest
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
     depends_on:
-      - eureka-server
-      - neo4j-player-recommendation
+      eureka-server:
+        condition: service_healthy
+      neo4j-player-recommendation:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     ports:
       - "9060:9060"
 
@@ -134,12 +143,18 @@ services:
       dockerfile: Dockerfile
     image: player-info-service:latest
     environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
       - SPRING_ELASTICSEARCH_URIS=http://player-info-db:9200
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     depends_on:
       eureka-server:
         condition: service_healthy
       player-info-db:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     ports:
       - "9090:9090"
