@@ -15,4 +15,5 @@ public interface TicketSaleElasticRepository extends ElasticsearchRepository<Tic
     List<TicketSaleDocument> findByPaymentMethod(String paymentMethod);
     List<TicketSaleDocument> findByZoneName(String zoneName);
     List<TicketSaleDocument> findByPriceBetween(Double minPrice, Double maxPrice);
+    List<TicketSaleDocument> findBySeatId(String seatId);
 }

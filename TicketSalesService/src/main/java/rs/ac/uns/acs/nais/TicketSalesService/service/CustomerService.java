@@ -3,6 +3,9 @@ package rs.ac.uns.acs.nais.TicketSalesService.service;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.acs.nais.TicketSalesService.dto.CustomerDTO;
 import rs.ac.uns.acs.nais.TicketSalesService.dto.PurchaseTicketDTO;
+import rs.ac.uns.acs.nais.TicketSalesService.event.TicketCancelledEvent;
+import rs.ac.uns.acs.nais.TicketSalesService.event.TicketPurchasedEvent;
+import rs.ac.uns.acs.nais.TicketSalesService.messaging.TicketEventPublisher;
 import rs.ac.uns.acs.nais.TicketSalesService.model.Customer;
 import rs.ac.uns.acs.nais.TicketSalesService.model.Event;
 import rs.ac.uns.acs.nais.TicketSalesService.model.EventZone;
@@ -15,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -22,13 +26,16 @@ public class CustomerService implements ICustomerService {
     private final CustomerRepository customerRepository;
     private final SeatRepository seatRepository;
     private final EventRepository eventRepository;
+    private final TicketEventPublisher ticketEventPublisher;
 
     public CustomerService(CustomerRepository customerRepository,
                            SeatRepository seatRepository,
-                           EventRepository eventRepository) {
+                           EventRepository eventRepository,
+                           TicketEventPublisher ticketEventPublisher) {
         this.customerRepository = customerRepository;
         this.seatRepository = seatRepository;
         this.eventRepository = eventRepository;
+        this.ticketEventPublisher = ticketEventPublisher;
     }
 
     @Override
@@ -71,17 +78,49 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public boolean purchaseTicket(PurchaseTicketDTO dto) {
-        Optional<Customer> customer = customerRepository.findById(dto.getCustomerId());
-        Optional<Seat> seat = seatRepository.findById(dto.getSeatId());
-        if (customer.isEmpty() || seat.isEmpty()) return false;
+        Optional<Customer> customerOpt = customerRepository.findById(dto.getCustomerId());
+        Optional<Seat> seatOpt = seatRepository.findById(dto.getSeatId());
+        if (customerOpt.isEmpty() || seatOpt.isEmpty()) return false;
         if (customerRepository.hasPurchasedSeat(dto.getCustomerId(), dto.getSeatId())) return false;
 
-        double price = calculatePrice(seat.get());
-        customerRepository.createPurchase(dto.getCustomerId(), dto.getSeatId(),
-                LocalDate.now().toString(), price, dto.getTicketType(), 0.0, dto.getPaymentMethod());
+        Customer customer = customerOpt.get();
+        Seat seat = seatOpt.get();
+        double price = calculatePrice(seat);
+        String purchaseDate = LocalDate.now().toString();
 
-        customer.get().setLoyaltyPoints(customer.get().getLoyaltyPoints() + 10);
-        customerRepository.save(customer.get());
+        customerRepository.createPurchase(dto.getCustomerId(), dto.getSeatId(),
+                purchaseDate, price, dto.getTicketType(), 0.0, dto.getPaymentMethod());
+
+        customer.setLoyaltyPoints(customer.getLoyaltyPoints() + 10);
+        customerRepository.save(customer);
+
+        Optional<Map<String, Object>> eventData = eventRepository.findEventDataBySeatId(dto.getSeatId());
+
+        TicketPurchasedEvent event = new TicketPurchasedEvent();
+        event.setSagaId(UUID.randomUUID().toString());
+        event.setCustomerId(customer.getCustomerId());
+        event.setCustomerName(customer.getName() + " " + customer.getSurname());
+        event.setCustomerEmail(customer.getEmail());
+        event.setSeatId(seat.getSeatId());
+        event.setSeatCategory(seat.getCategory());
+        event.setPrice(price);
+        event.setTicketType(dto.getTicketType());
+        event.setDiscountPercent(0.0);
+        event.setPaymentMethod(dto.getPaymentMethod());
+        event.setPurchaseDate(purchaseDate);
+        event.setLoyaltyPointsEarned(10);
+
+        eventData.ifPresent(data -> {
+            event.setEventId(data.get("eventId") != null ? data.get("eventId").toString() : null);
+            event.setEventName(data.get("eventName") != null ? data.get("eventName").toString() : null);
+            event.setEventDate(data.get("eventDate") != null ? data.get("eventDate").toString() : null);
+            event.setEventType(data.get("eventType") != null ? data.get("eventType").toString() : null);
+            event.setVenue(data.get("venue") != null ? data.get("venue").toString() : null);
+            event.setZoneId(data.get("zoneId") != null ? data.get("zoneId").toString() : null);
+            event.setZoneName(data.get("zoneName") != null ? data.get("zoneName").toString() : null);
+        });
+
+        ticketEventPublisher.publishTicketPurchased(event);
         return true;
     }
 
@@ -104,6 +143,8 @@ public class CustomerService implements ICustomerService {
     public boolean cancelTicket(String customerId, String seatId) {
         if (!customerRepository.hasPurchasedSeat(customerId, seatId)) return false;
         customerRepository.cancelTicket(customerId, seatId);
+        ticketEventPublisher.publishTicketCancelled(
+                new TicketCancelledEvent(UUID.randomUUID().toString(), customerId, seatId));
         return true;
     }
 
