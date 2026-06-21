@@ -22,7 +22,7 @@ public class MetricService implements IMetricService {
     }
 
     @Override
-    public Metric getMetricById(Long id) {
+    public Metric getMetricById(String id) {
         return metricRepo.findById(id).orElse(null);
     }
 
@@ -41,7 +41,7 @@ public class MetricService implements IMetricService {
     }
 
     @Override
-    public Metric updateMetric(Long id, CreateMetricDto metricDto) {
+    public Metric updateMetric(String id, CreateMetricDto metricDto) {
         Metric metricToUpdate = metricRepo.findById(id).orElse(null);
         if (metricToUpdate != null) {
             metricToUpdate.setName(metricDto.getName());
@@ -53,7 +53,7 @@ public class MetricService implements IMetricService {
     }
 
     @Override
-    public boolean deleteMetric(Long id) {
+    public boolean deleteMetric(String id) {
         if (metricRepo.findById(id).isEmpty()) {
             return false;
         }

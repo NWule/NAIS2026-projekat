@@ -24,7 +24,7 @@ public class MetricController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Metric> getMetricById(@PathVariable Long id) {
+    public ResponseEntity<Metric> getMetricById(@PathVariable String id) {
         Metric metric = metricService.getMetricById(id);
         if (metric != null) {
             return ResponseEntity.ok(metric);
@@ -38,7 +38,7 @@ public class MetricController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Metric> updateMetric(@RequestParam Long id, @RequestBody CreateMetricDto updatedMetric) {
+    public ResponseEntity<Metric> updateMetric(@RequestParam String id, @RequestBody CreateMetricDto updatedMetric) {
         Metric metric = metricService.updateMetric(id, updatedMetric);
         if (metric != null) {
             return ResponseEntity.ok(metric);
@@ -47,7 +47,7 @@ public class MetricController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Void> deleteMetric(@RequestParam Long id) {
+    public ResponseEntity<Void> deleteMetric(@RequestParam String id) {
         if (metricService.deleteMetric(id)) {
             return ResponseEntity.ok().build();
         }
