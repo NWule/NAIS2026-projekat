@@ -1,4 +1,4 @@
-package NAIS.PlayerInfoService.saga.event;
+package NAIS.PlayerRecommendationService.saga.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
