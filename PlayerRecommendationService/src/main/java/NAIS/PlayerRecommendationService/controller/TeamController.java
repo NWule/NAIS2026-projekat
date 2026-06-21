@@ -26,7 +26,7 @@ public class TeamController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team> getTeamById(@PathVariable Long id) {
+    public ResponseEntity<Team> getTeamById(@PathVariable String id) {
         Team team = teamService.getTeamById(id);
         if (team != null) {
             return ResponseEntity.ok(team);
@@ -40,7 +40,7 @@ public class TeamController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Team> updateTeam(@RequestParam Long id, @RequestBody CreateTeamDto updatedTeam) {
+    public ResponseEntity<Team> updateTeam(@RequestParam String id, @RequestBody CreateTeamDto updatedTeam) {
         Team team = teamService.updateTeam(id, updatedTeam);
         if (team != null) {
             return ResponseEntity.ok(team);
@@ -49,7 +49,7 @@ public class TeamController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Void> deleteTeam(@RequestParam Long id) {
+    public ResponseEntity<Void> deleteTeam(@RequestParam String id) {
         if (teamService.deleteTeam(id)) {
             return ResponseEntity.ok().build();
         }

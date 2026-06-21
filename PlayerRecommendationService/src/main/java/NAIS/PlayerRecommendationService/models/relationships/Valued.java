@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class Valued {
     @RelationshipId
     @GeneratedValue
-    private Long id;
+    private String id;
     private Integer score;
     private LocalDate creationDate;
 

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class TeamMembership {
     @RelationshipId
     @GeneratedValue
-    private Long id;
+    private String id;
     private String position;
     private LocalDate startDate;
     private LocalDate endDate;

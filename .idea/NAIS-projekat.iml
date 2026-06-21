@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/PlayerInfoService/src/main/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/PlayerRecommendationService/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/PlayerRecommendationService/target" />
+      <excludeFolder url="file://$MODULE_DIR$/PlayerInfoService/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/PlayerInfoService/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

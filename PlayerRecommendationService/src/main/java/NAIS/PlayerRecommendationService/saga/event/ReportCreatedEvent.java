@@ -1,12 +1,16 @@
-package NAIS.PlayerRecommendationService.dto;
+package NAIS.PlayerRecommendationService.saga.event;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.Map;
 
+@AllArgsConstructor
 @Getter
 @Setter
-public class CreateReportDto {
+public class ReportCreatedEvent {
+    private String reportId;
     private String text;
     private Integer score;
     private String game;
