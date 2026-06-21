@@ -15,8 +15,8 @@ NUM_PLAYERS = 100
 NUM_SCOUTS = 15
 
 # Generisanje zajedničkih ID-jeva kako bi podaci bili relacioni
-player_ids = [str(uuid.uuid4()) for _ in range(NUM_PLAYERS)]
-scout_ids = [str(uuid.uuid4()) for _ in range(NUM_SCOUTS)]
+player_ids = ['PLAY-001', 'PLAY-002', 'PLAY-003', 'PLAY-004', 'PLAY-005', 'PLAY-006', 'PLAY-007', 'PLAY-008', 'PLAY-009', 'PLAY-010']
+scout_ids = ['SCOUT-001', 'SCOUT-002', 'SCOUT-003', 'SCOUT-004', 'SCOUT-005', 'SCOUT-006', 'SCOUT-007', 'SCOUT-008', 'SCOUT-009', 'SCOUT-010']
 
 # Rečnici za generisanje smislenih fudbalskih fudbalskih tekstova
 tags_pool = ["box-to-box", "playmaker", "target-man", "injury-prone", "leader", "wonderkid", "speedster", "tactical-genius", "inconsistent", "work-rate", "poacher", "sweeper"]
