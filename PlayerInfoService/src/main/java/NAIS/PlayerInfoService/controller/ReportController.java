@@ -2,8 +2,10 @@ package NAIS.PlayerInfoService.controller;
 
 import NAIS.PlayerInfoService.dto.PlayerTierResponse;
 import NAIS.PlayerInfoService.dto.ReportDTO;
+import NAIS.PlayerInfoService.dto.SAGACreateReportDto;
 import NAIS.PlayerInfoService.dto.TacticalTrendResponse;
 import NAIS.PlayerInfoService.model.Report;
+import NAIS.PlayerInfoService.saga.ReportCreationService;
 import NAIS.PlayerInfoService.service.IReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReportController {
     private final IReportService reportService;
+    private final ReportCreationService reportCreationService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Report>> getAllReports() {
@@ -28,8 +31,8 @@ public class ReportController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Report> saveReport(@RequestBody ReportDTO report) {
-        return ResponseEntity.ok(reportService.saveReport(report));
+    public ResponseEntity<Report> saveReport(@RequestBody SAGACreateReportDto report) {
+        return ResponseEntity.ok(reportCreationService.createReport(report));
     }
 
     @DeleteMapping("/delete/{id}")

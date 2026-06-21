@@ -34,9 +34,21 @@ services:
       context: ./PlayerRecommendationService
       dockerfile: Dockerfile
     image: player-recommendation-service:latest
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_NEO4J_URI=bolt://neo4j-player-recommendation:7600
+      - SPRING_NEO4J_AUTHENTICATION_USERNAME=neo4j
+      - SPRING_NEO4J_AUTHENTICATION_PASSWORD=password
     depends_on:
-      - eureka-server
-      - neo4j-player-recommendation
+      eureka-server:
+        condition: service_healthy
+      neo4j-player-recommendation:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     ports:
       - "9060:9060"
 
@@ -49,12 +61,12 @@ services:
       NEO4J_AUTH: neo4j/password
       NEO4J_server_http_listen__address: ":7500"
       NEO4J_server_bolt_listen__address: ":7600"
-      NEO4J_server_http_advertised__address: "localhost:7500"
-      NEO4J_server_bolt_advertised__address: "localhost:7600"
+      NEO4J_server_http_advertised__address: "neo4j-player-recommendation:7500"
+      NEO4J_server_bolt_advertised__address: "neo4j-player-recommendation:7600"
     volumes:
       - neo4j_player_recommendation_data:/data
     healthcheck:
-      test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1" ]
+      test: [ "CMD", "cypher-shell", "-a", "bolt://localhost:7600", "-u", "neo4j", "-p", "password", "RETURN 1" ]
       interval: 20s
       timeout: 10s
       retries: 5
@@ -141,12 +153,18 @@ services:
       dockerfile: Dockerfile
     image: player-info-service:latest
     environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
       - SPRING_ELASTICSEARCH_URIS=http://player-info-db:9200
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     depends_on:
       eureka-server:
         condition: service_healthy
       player-info-db:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     ports:
       - "9090:9090"
@@ -301,6 +319,22 @@ services:
       timeout: 5s
       retries: 3
 
+  grafana:
+    image: grafana/grafana:latest
+    user: "0"
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      # --- PLUGIN INSTALLATION ---
+      # ove dodati plug-ins koji su potrebni
+      - GF_PLUGINS_PREINSTALL=elasticsearch,kniepdennis-neo4j-datasource
+      - GF_INSTALL_PLUGINS=elasticsearch,kniepdennis-neo4j-datasource
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - grafana_storage:/var/lib/grafana
+
 volumes:
   neo4j_player_recommendation_data: {}
   neo4j_data: {}
@@ -311,3 +345,4 @@ volumes:
   redis_data: {}
   redisinsight_data: {}
   rabbitmq_data: {}
+  grafana_storage: {}

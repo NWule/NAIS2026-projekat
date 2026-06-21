@@ -10,13 +10,13 @@ public interface ITeamService {
 
     public List<Team> getAllTeams();
 
-    public Team getTeamById(Long id);
+    public Team getTeamById(String id);
 
     public Team getTeamByName(String name);
 
     public Team saveTeam(CreateTeamDto newTeam);
 
-    public Team updateTeam(Long id, CreateTeamDto updatedTeam);
+    public Team updateTeam(String id, CreateTeamDto updatedTeam);
 
-    public boolean deleteTeam(Long id);
+    public boolean deleteTeam(String id);
 }

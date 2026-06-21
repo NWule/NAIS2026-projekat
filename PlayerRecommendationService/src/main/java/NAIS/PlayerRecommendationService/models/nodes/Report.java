@@ -15,8 +15,7 @@ import java.util.List;
 @Setter
 public class Report {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
     private String text;
     private Integer score;
     private String game;

@@ -16,8 +16,8 @@ import java.util.List;
 @Setter
 public class Player {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(GeneratedValue.UUIDGenerator.class)
+    private String id;
     private String name;
     private String surname;
     private LocalDate dateOfBirth;

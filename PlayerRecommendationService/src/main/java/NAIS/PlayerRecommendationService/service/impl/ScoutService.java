@@ -22,7 +22,7 @@ public class ScoutService implements IScoutService {
     }
 
     @Override
-    public Scout getScoutById(Long id) {
+    public Scout getScoutById(String id) {
         return scoutRepo.findById(id).orElse(null);
     }
 
@@ -42,7 +42,7 @@ public class ScoutService implements IScoutService {
     }
 
     @Override
-    public Scout updateScout(Long id, CreateScoutDto scoutDto) {
+    public Scout updateScout(String id, CreateScoutDto scoutDto) {
         Scout scoutToUpdate = scoutRepo.findById(id).orElse(null);
         if (scoutToUpdate != null) {
             scoutToUpdate.setName(scoutDto.getName());
@@ -55,7 +55,7 @@ public class ScoutService implements IScoutService {
     }
 
     @Override
-    public boolean deleteScout(Long id) {
+    public boolean deleteScout(String id) {
         if (scoutRepo.findById(id).isEmpty()) {
             return false;
         }

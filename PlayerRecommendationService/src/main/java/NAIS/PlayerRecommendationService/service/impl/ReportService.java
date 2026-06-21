@@ -39,11 +39,11 @@ public class ReportService implements IReportService {
         return reportRepo.findAll();
     }
 
-    public Report getReportById(Long id) {
+    public Report getReportById(String id) {
         return reportRepo.findById(id).orElse(null);
     }
 
-    public Report updateReport(Long id, UpdateReportDto dto) {
+    public Report updateReport(String id, UpdateReportDto dto) {
         Report reportToUpdate = reportRepo.findById(id).orElse(null);
         if (reportToUpdate != null) {
             reportToUpdate.setText(dto.getText());
@@ -86,7 +86,7 @@ public class ReportService implements IReportService {
         return savedReport;
     }
 
-    public boolean deleteReport(Long id) {
+    public boolean deleteReport(String id) {
         if (reportRepo.findById(id).isEmpty()) {
             return false;
         }
@@ -94,7 +94,7 @@ public class ReportService implements IReportService {
         return true;
     }
 
-    public void updateMetricScore(Long reportId, Long metricId, Integer newScore) {
+    public void updateMetricScore(String reportId, String metricId, Integer newScore) {
         Integer updatedCount = reportRepo.updateMetricScore(reportId, metricId, newScore);
 
         if (updatedCount == 0) {

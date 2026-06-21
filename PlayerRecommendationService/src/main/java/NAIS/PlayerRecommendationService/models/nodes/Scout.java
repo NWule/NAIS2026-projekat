@@ -14,8 +14,8 @@ import java.util.List;
 @Setter
 public class Scout {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(GeneratedValue.UUIDGenerator.class)
+    private String id;
     private String name;
     private String surname;
     private Integer yearsOfExperience;

@@ -10,22 +10,22 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface PlayerRepo extends Neo4jRepository<Player, Long> {
+public interface PlayerRepo extends Neo4jRepository<Player, String> {
     Player findByNameAndSurname(String name, String surname);
 
     @Query("MATCH (p:Player)-[r:PLAYS_FOR]->(t:Team) " +
-            "WHERE id(p) = $playerId AND id(t) = $teamId AND r.endDate IS NULL " +
+            "WHERE p.id = $playerId AND t.id = $teamId AND r.endDate IS NULL " +
             "SET r.endDate = $endDate " +
             "RETURN p")
-    void endTeamMembership(Long playerId, Long teamId, LocalDate endDate);
+    void endTeamMembership(String playerId, String teamId, LocalDate endDate);
 
     @Query("MATCH (p:Player)<-[:IS_ABOUT]-(r:Report)-[v:VALUED]->(m:Metric) " +
-            "WHERE id(m) IN $metricIds " +
+            "WHERE m.id IN $metricIds " +
             "WITH p, sum(v.score) AS totalScore " +
             "ORDER BY totalScore DESC " +
             "LIMIT 1 " +
             "RETURN p")
-    Player findPlayerWithBestScoreForMetrics(@Param("metricIds") List<Long> metricIds);
+    Player findPlayerWithBestScoreForMetrics(@Param("metricIds") List<String> metricIds);
 
     @Query("MATCH (target:Player) WHERE id(target) = $playerId " +
             "MATCH (target)<-[:IS_ABOUT]-(:Report)-[v1:VALUED]->(m:Metric) " +
@@ -36,7 +36,7 @@ public interface PlayerRepo extends Neo4jRepository<Player, Long> {
             "ORDER BY sharedStrongMetrics DESC " +
             "RETURN similarPlayer " +
             "LIMIT 5")
-    List<Player> findSimilarPlayers(@Param("playerId") Long playerId);
+    List<Player> findSimilarPlayers(@Param("playerId") String playerId);
 
     @Query("MATCH (s:Scout)-[:CREATED]->(r:Report)-[:IS_ABOUT]->(p:Player) " +
             "WHERE s.reliabilityScore >= $minReliability " +

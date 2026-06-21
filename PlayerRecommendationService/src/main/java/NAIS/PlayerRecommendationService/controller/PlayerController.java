@@ -27,7 +27,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Player> getPlayerById(@PathVariable Long id) {
+    public ResponseEntity<Player> getPlayerById(@PathVariable String id) {
         Player player = playerService.getPlayerById(id);
         if (player != null) {
             return ResponseEntity.ok(player);
@@ -41,12 +41,12 @@ public class PlayerController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Player> updatePlayer(@RequestParam Long id, CreatePlayerDto updatedPlayer) {
+    public ResponseEntity<Player> updatePlayer(@RequestParam String id, CreatePlayerDto updatedPlayer) {
         return ResponseEntity.ok(playerService.updatePlayer(id, updatedPlayer));
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Player> deletePlayer(@RequestParam Long id) {
+    public ResponseEntity<Player> deletePlayer(@RequestParam String id) {
         if (playerService.deletePlayer(id)) {
             return ResponseEntity.ok().build();
         }
@@ -55,8 +55,8 @@ public class PlayerController {
 
     @PostMapping("/{id}/teams")
     public ResponseEntity<Player> addTeamToPlayer(
-            @PathVariable Long id,
-            @RequestParam Long teamId,
+            @PathVariable String id,
+            @RequestParam String teamId,
             @RequestParam String position) {
 
         Player updatedPlayer = playerService.addTeamMembership(id, teamId, position);
@@ -66,15 +66,15 @@ public class PlayerController {
 
     @PutMapping("/{id}/teams/end")
     public ResponseEntity<Void> endTeamMembership(
-            @PathVariable Long id,
-            @RequestParam Long teamId) {
+            @PathVariable String id,
+            @RequestParam String teamId) {
 
         playerService.endPlayerMembership(id, teamId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/best-per-metrics")
-    public ResponseEntity<Player> getBestPlayerForMetrics(@RequestParam List<Long> metricIds) {
+    public ResponseEntity<Player> getBestPlayerForMetrics(@RequestParam List<String> metricIds) {
         Player player = playerService.getPlayerWithBestScoreForMetrics(metricIds);
         if (player != null) {
             return ResponseEntity.ok(player);
@@ -83,7 +83,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}/similar")
-    public ResponseEntity<List<Player>> getSimilarPlayers(@PathVariable Long id) {
+    public ResponseEntity<List<Player>> getSimilarPlayers(@PathVariable String id) {
         return ResponseEntity.ok(playerService.getSimilarPlayers(id));
     }
 

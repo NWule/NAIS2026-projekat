@@ -7,7 +7,6 @@ import NAIS.PlayerRecommendationService.models.relationships.TeamMembership;
 import NAIS.PlayerRecommendationService.repository.PlayerRepo;
 import NAIS.PlayerRecommendationService.repository.TeamRepo;
 import NAIS.PlayerRecommendationService.service.IPlayerService;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +29,7 @@ public class PlayerService implements IPlayerService {
         return playerRepo.findAll();
     }
 
-    public Player getPlayerById(Long id) {
+    public Player getPlayerById(String id) {
         return playerRepo.findById(id).orElse(null);
     }
 
@@ -47,7 +46,7 @@ public class PlayerService implements IPlayerService {
         return playerRepo.save(player);
     }
 
-    public Player updatePlayer(Long id, CreatePlayerDto updatedPlayer) {
+    public Player updatePlayer(String id, CreatePlayerDto updatedPlayer) {
         Player player = playerRepo.findById(id).orElse(null);
         if (player != null) {
             player.setName(updatedPlayer.getName());
@@ -59,7 +58,7 @@ public class PlayerService implements IPlayerService {
         return null;
     }
 
-    public boolean deletePlayer(Long id) {
+    public boolean deletePlayer(String id) {
         if (playerRepo.findById(id).isEmpty()) {
             return false;
         }
@@ -68,7 +67,7 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public Player addTeamMembership(Long playerId, Long teamId, String position) {
+    public Player addTeamMembership(String playerId, String teamId, String position) {
         Player player = playerRepo.findById(playerId).orElseThrow();
         Team team = teamRepo.findById(teamId).orElseThrow();
 
@@ -87,21 +86,20 @@ public class PlayerService implements IPlayerService {
 
     @Override
     @Transactional
-    public void endPlayerMembership(Long playerId, Long teamId) {
+    public void endPlayerMembership(String playerId, String teamId) {
         playerRepo.endTeamMembership(playerId, teamId, LocalDate.now());
     }
 
-    public Player getPlayerWithBestScoreForMetrics(List<Long> metricIds) {
+    public Player getPlayerWithBestScoreForMetrics(List<String> metricIds) {
         return playerRepo.findPlayerWithBestScoreForMetrics(metricIds);
     }
 
     @Override
-    public List<Player> getSimilarPlayers(Long id) {
+    public List<Player> getSimilarPlayers(String id) {
         return playerRepo.findSimilarPlayers(id);
     }
 
     public List<Player> getEliteProspects(Integer maxAge, Integer minScoutReliability, Double minScore) {
-        // Calculate the cutoff date based on the maximum age requested
         LocalDate cutoffDate = LocalDate.now().minusYears(maxAge);
 
         return playerRepo.findEliteProspects(cutoffDate, minScoutReliability, minScore);

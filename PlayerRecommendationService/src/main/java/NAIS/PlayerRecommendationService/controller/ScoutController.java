@@ -24,7 +24,7 @@ public class ScoutController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Scout> getScoutById(@PathVariable Long id) {
+    public ResponseEntity<Scout> getScoutById(@PathVariable String id) {
         Scout scout = scoutService.getScoutById(id);
         if (scout != null) {
             return ResponseEntity.ok(scout);
@@ -38,7 +38,7 @@ public class ScoutController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Scout> updateScout(@RequestParam Long id, @RequestBody CreateScoutDto updatedScout) {
+    public ResponseEntity<Scout> updateScout(@RequestParam String id, @RequestBody CreateScoutDto updatedScout) {
         Scout scout = scoutService.updateScout(id, updatedScout);
         if (scout != null) {
             return ResponseEntity.ok(scout);
@@ -47,7 +47,7 @@ public class ScoutController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Void> deleteScout(@RequestParam Long id) {
+    public ResponseEntity<Void> deleteScout(@RequestParam String id) {
         if (scoutService.deleteScout(id)) {
             return ResponseEntity.ok().build();
         }
