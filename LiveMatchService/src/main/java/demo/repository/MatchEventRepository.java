@@ -22,4 +22,6 @@ public interface MatchEventRepository {
     Map<String, Long> findTopScorers();
     Map<String, Long> findTeamFoulsByMatch(String matchId);
     Map<String, Long> findMostPassesInSingleMatch();
+
+    Boolean markMatchAsDeleted(String matchId);
 }

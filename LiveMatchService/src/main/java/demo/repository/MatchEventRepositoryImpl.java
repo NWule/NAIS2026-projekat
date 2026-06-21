@@ -143,4 +143,27 @@ public class MatchEventRepositoryImpl implements MatchEventRepository {
         influxDBClient.close();
         return result;
     }
+
+    @Override
+    public Boolean markMatchAsDeleted(String matchId) {
+        try {
+            InfluxDBClient influxDBClient = inConn.buildConnection();
+
+            MatchEvent tombstoneEvent = new MatchEvent(
+                    matchId,
+                    "SYSTEM",
+                    "SYSTEM",
+                    "MATCH_STATUS",
+                    "is_deleted",
+                    1.0,
+                    java.time.Instant.now()
+            );
+
+            Boolean isSuccess = inConn.save(influxDBClient, tombstoneEvent);
+            influxDBClient.close();
+            return isSuccess;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
