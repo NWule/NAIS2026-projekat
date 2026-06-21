@@ -12,8 +12,8 @@ import java.time.LocalDate;
 @Setter
 public class TeamMembership {
     @RelationshipId
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(GeneratedValue.UUIDGenerator.class)
+    private String id;
     private String position;
     private LocalDate startDate;
     private LocalDate endDate;

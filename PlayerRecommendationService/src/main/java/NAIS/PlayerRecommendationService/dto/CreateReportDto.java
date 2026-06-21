@@ -10,7 +10,7 @@ public class CreateReportDto {
     private String text;
     private Integer score;
     private String game;
-    private Long scoutId;
-    private Long playerId;
+    private String scoutId;
+    private String playerId;
     private Map<Long, Integer> metricValues;
 }

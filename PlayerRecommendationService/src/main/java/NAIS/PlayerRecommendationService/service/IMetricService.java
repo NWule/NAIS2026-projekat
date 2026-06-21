@@ -10,13 +10,13 @@ public interface IMetricService {
 
     public List<Metric> getAllMetrics();
 
-    public Metric getMetricById(Long id);
+    public Metric getMetricById(String id);
 
     public Metric getMetricByName(String name);
 
     public Metric saveMetric(CreateMetricDto newMetric);
 
-    public Metric updateMetric(Long id, CreateMetricDto updatedMetric);
+    public Metric updateMetric(String id, CreateMetricDto updatedMetric);
 
-    public boolean deleteMetric(Long id);
+    public boolean deleteMetric(String id);
 }

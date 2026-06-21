@@ -20,7 +20,7 @@ public class TeamService implements ITeamService {
         return teamRepo.findAll();
     }
 
-    public Team getTeamById(Long id) {
+    public Team getTeamById(String id) {
         return teamRepo.findById(id).orElse(null);
     }
 
@@ -35,7 +35,7 @@ public class TeamService implements ITeamService {
         return teamRepo.save(newTeam);
     }
 
-    public Team updateTeam(Long id, CreateTeamDto team) {
+    public Team updateTeam(String id, CreateTeamDto team) {
         Team teamToUpdate = teamRepo.findById(id).orElse(null);
         if (teamToUpdate != null) {
             teamToUpdate.setName(team.getName());
@@ -46,7 +46,7 @@ public class TeamService implements ITeamService {
     }
 
     @Override
-    public boolean deleteTeam(Long id) {
+    public boolean deleteTeam(String id) {
         if (teamRepo.findById(id).isEmpty()) {
             return false;
         }

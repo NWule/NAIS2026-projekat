@@ -11,8 +11,8 @@ import org.springframework.data.neo4j.core.schema.Node;
 @Setter
 public class Team {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(GeneratedValue.UUIDGenerator.class)
+    private String id;
     private String name;
     private String country;
 }

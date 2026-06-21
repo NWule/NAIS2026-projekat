@@ -16,8 +16,8 @@ import java.time.LocalDate;
 @Setter
 public class Valued {
     @RelationshipId
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(GeneratedValue.UUIDGenerator.class)
+    private String id;
     private Integer score;
     private LocalDate creationDate;
 

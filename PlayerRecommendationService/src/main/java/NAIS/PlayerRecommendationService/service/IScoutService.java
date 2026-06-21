@@ -9,13 +9,13 @@ public interface IScoutService {
 
     public List<Scout> getAllScouts();
 
-    public Scout getScoutById(Long id);
+    public Scout getScoutById(String id);
 
     public Scout getScoutByNameAndSurname(String name, String surname);
 
     public Scout saveScout(CreateScoutDto newScout);
 
-    public Scout updateScout(Long id, CreateScoutDto updatedScout);
+    public Scout updateScout(String id, CreateScoutDto updatedScout);
 
-    public boolean deleteScout(Long id);
+    public boolean deleteScout(String id);
 }
