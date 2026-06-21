@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 public class Valued {
     @RelationshipId
-    @GeneratedValue(GeneratedValue.UUIDGenerator.class)
+    @GeneratedValue
     private String id;
     private Integer score;
     private LocalDate creationDate;

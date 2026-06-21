@@ -39,6 +39,9 @@ services:
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_RABBITMQ_USERNAME=guest
       - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_NEO4J_URI=bolt://neo4j-player-recommendation:7600
+      - SPRING_NEO4J_AUTHENTICATION_USERNAME=neo4j
+      - SPRING_NEO4J_AUTHENTICATION_PASSWORD=password
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -58,12 +61,12 @@ services:
       NEO4J_AUTH: neo4j/password
       NEO4J_server_http_listen__address: ":7500"
       NEO4J_server_bolt_listen__address: ":7600"
-      NEO4J_server_http_advertised__address: "localhost:7500"
-      NEO4J_server_bolt_advertised__address: "localhost:7600"
+      NEO4J_server_http_advertised__address: "neo4j-player-recommendation:7500"
+      NEO4J_server_bolt_advertised__address: "neo4j-player-recommendation:7600"
     volumes:
       - neo4j_player_recommendation_data:/data
     healthcheck:
-      test: [ "CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1" ]
+      test: [ "CMD", "cypher-shell", "-a", "bolt://localhost:7600", "-u", "neo4j", "-p", "password", "RETURN 1" ]
       interval: 20s
       timeout: 10s
       retries: 5

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 public class TeamMembership {
     @RelationshipId
-    @GeneratedValue(GeneratedValue.UUIDGenerator.class)
+    @GeneratedValue
     private String id;
     private String position;
     private LocalDate startDate;

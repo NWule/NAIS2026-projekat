@@ -46,7 +46,7 @@ public class ReportCreationService {
 
         try {
             rabbitTemplate.convertAndSend(
-                    RabbitMQConfig.REPORT_CREATED_QUEUE,
+                    RabbitMQConfig.EXCHANGE_NAME,
                     RabbitMQConfig.REPORT_CREATED_KEY,
                     event
             );

@@ -75,7 +75,7 @@ public class ReportCreationListener {
             ReportCreationFailedEvent failedEvent = new ReportCreationFailedEvent(event.getReportId(), e.getMessage());
 
             rabbitTemplate.convertAndSend(
-                    RabbitMQConfig.REPORT_CREATED_CONFIRMATION_QUEUE,
+                    RabbitMQConfig.EXCHANGE_NAME,
                     RabbitMQConfig.REPORT_CREATED_FAILED_KEY,
                     failedEvent
             );
@@ -87,7 +87,7 @@ public class ReportCreationListener {
 
         try {
             rabbitTemplate.convertAndSend(
-                RabbitMQConfig.REPORT_CREATED_CONFIRMATION_QUEUE,
+                RabbitMQConfig.EXCHANGE_NAME,
                 RabbitMQConfig.REPORT_CREATED_PROCESSED_KEY,
                 confirmationEvent
             );

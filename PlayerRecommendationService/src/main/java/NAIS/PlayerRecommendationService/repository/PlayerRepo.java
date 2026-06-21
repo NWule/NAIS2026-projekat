@@ -14,13 +14,13 @@ public interface PlayerRepo extends Neo4jRepository<Player, String> {
     Player findByNameAndSurname(String name, String surname);
 
     @Query("MATCH (p:Player)-[r:PLAYS_FOR]->(t:Team) " +
-            "WHERE id(p) = $playerId AND id(t) = $teamId AND r.endDate IS NULL " +
+            "WHERE p.id = $playerId AND t.id = $teamId AND r.endDate IS NULL " +
             "SET r.endDate = $endDate " +
             "RETURN p")
     void endTeamMembership(String playerId, String teamId, LocalDate endDate);
 
     @Query("MATCH (p:Player)<-[:IS_ABOUT]-(r:Report)-[v:VALUED]->(m:Metric) " +
-            "WHERE id(m) IN $metricIds " +
+            "WHERE m.id IN $metricIds " +
             "WITH p, sum(v.score) AS totalScore " +
             "ORDER BY totalScore DESC " +
             "LIMIT 1 " +
