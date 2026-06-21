@@ -100,6 +100,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       RABBITMQ_HOST: rabbitmq
+      TICKET_SALES_SERVICE_URL: http://ticket-sales-service:9070
     ports:
       - "9071:9071"
 

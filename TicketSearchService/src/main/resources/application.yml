@@ -16,6 +16,9 @@ spring:
   application:
     name: ticket-search-service
 
+ticket-sales-service:
+  url: ${TICKET_SALES_SERVICE_URL:http://localhost:9070}
+
 eureka:
   client:
     service-url:
