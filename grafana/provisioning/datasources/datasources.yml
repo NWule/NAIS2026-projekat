@@ -1,0 +1,28 @@
+apiVersion: 1
+
+datasources:
+  - name: Elasticsearch Tickets
+    type: elasticsearch
+    uid: elasticsearch-tickets
+    access: proxy
+    url: http://elasticsearch:9200
+    isDefault: false
+    jsonData:
+      index: ticket_sales
+      timeField: purchaseDate
+      esVersion: "8.0.0"
+      maxConcurrentShardRequests: 5
+    editable: true
+
+  - name: Neo4j Tickets
+    type: kniepdennis-neo4j-datasource
+    uid: neo4j-tickets
+    access: proxy
+    isDefault: false
+    jsonData:
+      url: bolt://neo4j:7687
+      database: neo4j
+    secureJsonData:
+      username: neo4j
+      password: password
+    editable: true

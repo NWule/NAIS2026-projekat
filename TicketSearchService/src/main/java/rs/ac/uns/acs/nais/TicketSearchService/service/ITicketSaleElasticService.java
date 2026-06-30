@@ -18,4 +18,5 @@ public interface ITicketSaleElasticService {
     void deleteById(String id);
     List<Map<String, Object>> getSalesAnalyticsByEventTypeAndPaymentMethod(String startDate, String endDate);
     List<Map<String, Object>> getTopEventsByRevenue(int limit, String eventType);
+    List<Map<String, Object>> getRevenueByZone();
 }
