@@ -93,4 +93,33 @@ public class TicketSaleElasticRepositoryCustomImpl implements TicketSaleElasticR
         }
         return results;
     }
+
+    @Override
+    public List<Map<String, Object>> getRevenueByZone() {
+        List<Map<String, Object>> results = new ArrayList<>();
+        try {
+            SearchResponse<Void> response = elasticsearchClient.search(s -> s
+                .index("ticket_sales")
+                .size(0)
+                .aggregations("by_zone", a -> a
+                    .terms(t -> t.field("zoneName").size(10).order(List.of(NamedValue.of("total_revenue", SortOrder.Desc))))
+                    .aggregations("total_revenue", ra -> ra.sum(su -> su.field("price")))
+                    .aggregations("ticket_count", tc -> tc.valueCount(vc -> vc.field("customerId")))
+                    .aggregations("avg_price", ap -> ap.avg(av -> av.field("price")))
+                ), Void.class);
+
+            var byZone = response.aggregations().get("by_zone").sterms();
+            for (StringTermsBucket bucket : byZone.buckets().array()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("zoneName", bucket.key().stringValue());
+                row.put("totalRevenue", bucket.aggregations().get("total_revenue").sum().value());
+                row.put("ticketCount", bucket.aggregations().get("ticket_count").valueCount().value());
+                row.put("avgPrice", bucket.aggregations().get("avg_price").avg().value());
+                results.add(row);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Greška pri dohvatanju prihoda po zoni", e);
+        }
+        return results;
+    }
 }

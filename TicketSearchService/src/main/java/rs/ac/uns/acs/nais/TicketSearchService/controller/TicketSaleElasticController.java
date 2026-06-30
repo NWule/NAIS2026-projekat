@@ -61,4 +61,9 @@ public class TicketSaleElasticController {
     public List<Map<String, Object>> getTopEvents(@RequestParam(defaultValue = "10") int limit, @RequestParam(required = false) String eventType) {
         return service.getTopEventsByRevenue(limit, eventType);
     }
+
+    @GetMapping("/analytics/revenue-by-zone")
+    public List<Map<String, Object>> getRevenueByZone() {
+        return service.getRevenueByZone();
+    }
 }

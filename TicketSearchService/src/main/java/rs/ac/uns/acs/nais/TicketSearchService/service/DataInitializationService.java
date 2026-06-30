@@ -13,8 +13,8 @@ import java.util.*;
 @Service
 public class DataInitializationService implements ApplicationRunner {
 
-    private static final int TARGET_EVENTS = 1000;
-    private static final int TARGET_TICKETS = 1200;
+    private static final int TARGET_EVENTS = 50;
+    private static final int TARGET_TICKETS = 100;
     private static final String HOME_TEAM = "FK Vojvodina";
     private static final String VENUE = "Stadion Karadjordje";
     private static final String CITY = "Novi Sad";

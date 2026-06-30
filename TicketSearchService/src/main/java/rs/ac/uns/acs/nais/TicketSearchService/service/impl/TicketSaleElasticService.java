@@ -31,4 +31,5 @@ public class TicketSaleElasticService implements ITicketSaleElasticService {
     @Override public void deleteById(String id) { repository.deleteById(id); }
     @Override public List<Map<String, Object>> getSalesAnalyticsByEventTypeAndPaymentMethod(String s, String e) { return customRepository.getSalesAnalyticsByEventTypeAndPaymentMethod(s, e); }
     @Override public List<Map<String, Object>> getTopEventsByRevenue(int limit, String eventType) { return customRepository.getTopEventsByRevenue(limit, eventType); }
+    @Override public List<Map<String, Object>> getRevenueByZone() { return customRepository.getRevenueByZone(); }
 }
